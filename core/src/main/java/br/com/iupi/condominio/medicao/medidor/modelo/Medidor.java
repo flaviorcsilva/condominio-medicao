@@ -5,23 +5,23 @@ import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
 
 public class Medidor extends Entidade<String> {
 
-	private Unidade unidade;
+	private String numero;
 
 	private TipoMedidor tipo;
 
-	private String numero;
-	
+	private Unidade unidade;
+
 	public Medidor() {
 		// Construtor padrão
 	}
 
-	public Medidor(Unidade unidade, TipoMedidor tipo, String numero) {
+	public Medidor(String numero, TipoMedidor tipo, Unidade unidade) {
 		super();
-		this.unidade = unidade;
-		this.tipo = tipo;
 		this.numero = numero;
+		this.tipo = tipo;
+		this.unidade = unidade;
 	}
-	
+
 	public String getId() {
 		return numero;
 	}
@@ -30,12 +30,12 @@ public class Medidor extends Entidade<String> {
 		this.numero = id;
 	}
 
-	public Unidade getUnidade() {
-		return unidade;
+	public String getNumero() {
+		return numero;
 	}
 
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public TipoMedidor getTipo() {
@@ -46,11 +46,11 @@ public class Medidor extends Entidade<String> {
 		this.tipo = tipo;
 	}
 
-	public String getNumero() {
-		return numero;
+	public Unidade getUnidade() {
+		return unidade;
 	}
 
-	public void setNumero(String numero) {
-		this.numero = numero;
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 }

@@ -12,7 +12,21 @@ public class Unidade {
 
 	private String unidade;
 
+	private String descricao;
+
 	private List<Medidor> medidores = new ArrayList<Medidor>();
+
+	public Unidade() {
+		//
+	}
+
+	public Unidade(String unidade, String descricao) {
+		super();
+		this.condominio = "Privilege Noroeste";
+		this.unidade = unidade;
+		this.descricao = descricao;
+		this.medidores = new ArrayList<Medidor>();
+	}
 
 	public String getCondominio() {
 		return condominio;
@@ -28,6 +42,14 @@ public class Unidade {
 
 	public void setUnidade(String unidade) {
 		this.unidade = unidade;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 	public List<Medidor> getMedidores() {
