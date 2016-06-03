@@ -14,16 +14,19 @@ import br.com.iupi.condominio.medicao.unidade.service.UnidadeService;
 public class MedidorService {
 
 	private static final HashMap<String, Medidor> medidores = new HashMap<String, Medidor>();
-
-	public MedidorService() {
+	
+	static {
 		medidores.put("AGF-212", new Medidor("AGF-212", TipoMedidor.AGUA_FRIA, UnidadeService.consultaUnidade("212"))); //
 		medidores.put("AGQ-212", new Medidor("AGQ-212", TipoMedidor.AGUA_QUENTE, UnidadeService.consultaUnidade("212"))); //
 		medidores.put("GAS-212", new Medidor("GAS-212", TipoMedidor.GAS, UnidadeService.consultaUnidade("212"))); //
 		medidores.put("AGF-213", new Medidor("AGF-213", TipoMedidor.AGUA_FRIA, UnidadeService.consultaUnidade("213"))); //
 		medidores.put("AGQ-213", new Medidor("AGQ-213", TipoMedidor.AGUA_QUENTE, UnidadeService.consultaUnidade("213"))); //
 		medidores.put("GAS-213", new Medidor("GAS-213", TipoMedidor.GAS, UnidadeService.consultaUnidade("213")));
-		medidores.put("AGA-GERAL", new Medidor("AGA-GERAL", TipoMedidor.AGUA_FRIA, UnidadeService.consultaUnidade("geral"))); //
+		medidores.put("AGF-GERAL", new Medidor("AGF-GERAL", TipoMedidor.AGUA_FRIA, UnidadeService.consultaUnidade("geral"))); //
 		medidores.put("GAS-GERAL", new Medidor("GAS-GERAL", TipoMedidor.GAS, UnidadeService.consultaUnidade("geral"))); //
+	}
+
+	public MedidorService() {
 	}
 
 	public static Medidor consultaMedidor(String numero) {

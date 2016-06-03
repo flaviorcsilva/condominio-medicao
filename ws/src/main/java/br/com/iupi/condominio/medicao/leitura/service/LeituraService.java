@@ -32,8 +32,11 @@ public class LeituraService {
 		return sequencial.get();
 	}
 
-	public static void insereLeitura(String unidadeMedida, LocalDate dataLeitura, TipoMedidor tipoMedidor,
+	public static void registraLeitura(String unidadeMedida, LocalDate dataLeitura, TipoMedidor tipoMedidor,
 			Integer medido) {
+		// verifica se já existe leitura realizada para o mês desta unidade
+		
+		// obtém o medidor da unidade
 		Medidor medidor = MedidorService.consultaMedidor(unidadeMedida, tipoMedidor);
 
 		Leitura leitura = new Leitura(medidor, dataLeitura, medido);
