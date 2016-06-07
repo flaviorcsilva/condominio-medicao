@@ -1,5 +1,6 @@
 package br.com.iupi.condominio.medicao.leitura.ws;
 
+import java.net.URI;
 import java.time.LocalDate;
 
 import javax.ejb.Stateless;
@@ -11,11 +12,14 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 
+import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
+import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
 import br.com.iupi.condominio.medicao.helper.DataHelper;
+import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.leitura.service.LeituraService;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
-import br.com.iupi.condominio.medicao.unidade.service.UnidadeService;
 
 @Path("/leitura")
 @Stateless
@@ -26,28 +30,34 @@ public class LeituraResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response leitura(@PathParam("unidade") String unidade, @QueryParam("data") String data,
 			@QueryParam("tipo") Integer tipo, @QueryParam("medido") Integer medido) {
+		Leitura leitura = null;
 
-		if (UnidadeService.consultaUnidade(unidade) == null) {
+		try {
+			// valida o formato e a data informada
+			LocalDate dataLeitura = DataHelper.convertStringToLocalDate(data);
+
+			// valida o tipo da leitura
+			TipoMedidor tipoMedidor = TipoMedidor.get(tipo);
+			if (tipoMedidor == null) {
+				throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
+						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
+			}
+
+			Integer id = LeituraService.registraLeitura(unidade, dataLeitura, tipoMedidor, medido);
+			leitura = LeituraService.consultaLeitura(id);
+
+			System.out
+					.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);
+		} catch (NegocioException ne) {
 			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-					.entity("Unidade que foi medida não existe nesse condomínio.").build());
+					.entity(ne.getMensagem().getMensagem()).encoding("UTF-8").build());
+		} catch (Exception e) {
+			throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(e.getMessage()).encoding("UTF-8").build());
 		}
 
-		// valida o formato e a data informada
-		LocalDate dataLeitura = DataHelper.convertStringToLocalDate(data);
+		URI uri = UriBuilder.fromPath("leitura/" + unidade + "/{id}").build(leitura.getId().intValue());
 
-		// valida o tipo da leitura
-		TipoMedidor tipoMedidor = TipoMedidor.get(tipo);
-		if (tipoMedidor == null) {
-			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-					.entity("Tipo da leitura inválida. Tipos de Medição: 1 - Água Fria, 2 - Água Quente e 3 - Gás.")
-					.build());
-		}
-
-		LeituraService.registraLeitura(unidade, dataLeitura, tipoMedidor, medido);
-
-		System.out.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);
-
-		return null;
-		//return Response.created(new URI(PATH + leitura.getId())).entity(leitura).type(MediaType.APPLICATION_JSON_TYPE).build();
+		return Response.created(uri).entity(leitura).type(MediaType.APPLICATION_JSON_TYPE).build();
 	}
 }

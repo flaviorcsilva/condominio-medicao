@@ -25,4 +25,14 @@ public class UnidadeService {
 	public static Unidade consultaUnidade(String unidade) {
 		return unidades.get(unidade);
 	}
+	
+	public static boolean existeUnidade(String unidade) {
+		Unidade u = unidades.get(unidade);
+		
+		if (u == null) {
+			return false;
+		}
+		
+		return true;
+	}
 }

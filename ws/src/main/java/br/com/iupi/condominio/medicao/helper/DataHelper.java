@@ -4,13 +4,15 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
+import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
+import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
 
 public class DataHelper {
 
 	public static LocalDate convertStringToLocalDate(String strDate) {
-		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy").withLocale(new Locale("pt-br"));
+		// DateTimeFormatter formatter =
+		// DateTimeFormatter.ofPattern("ddMMyyyy").withLocale(new
+		// Locale("pt-br"));
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
 
 		LocalDate date = null;
@@ -18,8 +20,7 @@ public class DataHelper {
 		try {
 			date = LocalDate.parse(strDate, formatter);
 		} catch (DateTimeParseException e) {
-			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-					.entity("Erro na conversão da data. Formato: ddMMyyyy.").build());
+			throw new NegocioException(Mensagem.DATA_ERRO_CONVERSAO);
 		}
 
 		return date;
