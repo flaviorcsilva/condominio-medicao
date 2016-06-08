@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 import javax.ejb.Stateless;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
 import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
 import br.com.iupi.condominio.medicao.helper.DataHelper;
+import br.com.iupi.condominio.medicao.leitura.dto.LeituraDTO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.leitura.service.LeituraService;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
@@ -24,6 +26,15 @@ import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
 @Path("/leitura")
 @Stateless
 public class LeituraResource {
+	
+	@GET
+	@Path("/{unidade}/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public LeituraDTO leitura(@PathParam("unidade") String unidade, @PathParam("id") Integer id) {
+		Leitura leitura = LeituraService.consultaLeitura(id);
+		
+		return new LeituraDTO(leitura);
+	}
 
 	@POST
 	@Path("/{unidade}")
@@ -58,6 +69,6 @@ public class LeituraResource {
 
 		URI uri = UriBuilder.fromPath("leitura/" + unidade + "/{id}").build(leitura.getId().intValue());
 
-		return Response.created(uri).entity(leitura).type(MediaType.APPLICATION_JSON_TYPE).build();
+		return Response.created(uri).entity(new LeituraDTO(leitura)).type(MediaType.APPLICATION_JSON_TYPE).build();
 	}
 }
