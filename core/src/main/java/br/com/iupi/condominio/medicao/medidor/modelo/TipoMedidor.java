@@ -29,5 +29,5 @@ public enum TipoMedidor {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
+	}	
 }

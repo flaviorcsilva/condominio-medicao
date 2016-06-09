@@ -2,6 +2,9 @@ package br.com.iupi.condominio.medicao.leitura.ws;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -38,6 +41,25 @@ public class LeituraResource {
 		Leitura leitura = service.consultaLeitura(id);
 
 		return new LeituraDTO(leitura);
+	}
+
+	@GET
+	@Path("/{unidade}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<LeituraDTO> leituras(@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes,
+			@QueryParam("ano") Integer ano) {
+		YearMonth mesAno = YearMonth.of(ano, mes);
+		LocalDate inicioMes = mesAno.atDay(1);
+		LocalDate finalMes = mesAno.atEndOfMonth();
+
+		List<Leitura> leituras = service.consultaLeituras(unidade, inicioMes, finalMes);
+
+		List<LeituraDTO> lista = new ArrayList<LeituraDTO>();
+		for (Leitura leitura : leituras) {
+			lista.add(new LeituraDTO(leitura));
+		}
+
+		return lista;
 	}
 
 	@POST

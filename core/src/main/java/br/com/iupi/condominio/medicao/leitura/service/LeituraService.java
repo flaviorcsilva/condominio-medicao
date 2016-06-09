@@ -1,11 +1,13 @@
 package br.com.iupi.condominio.medicao.leitura.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
+import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
 import br.com.iupi.condominio.medicao.comum.validacao.Assert;
 import br.com.iupi.condominio.medicao.leitura.dao.LeituraDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
@@ -54,7 +56,21 @@ public class LeituraService {
 	}
 
 	public Leitura consultaLeitura(Long id) {
-		return dao.consultaPorId(id);
+		Leitura leitura = dao.consultaPorId(id);
+
+		if (leitura == null) {
+			throw new NegocioException(Mensagem.LEITURA_NAO_EXISTENTE);
+		}
+
+		return leitura;
+	}
+
+	public List<Leitura> consultaLeituras(String unidade, LocalDate inicioMes, LocalDate finalMes) {
+		Unidade unidadeCondominio = unidadeService.consultaUnidade(unidade);
+
+		List<Leitura> leituras = dao.consultaPorUnidadeMesAno(unidadeCondominio, inicioMes, finalMes);
+
+		return leituras;
 	}
 
 	/*
