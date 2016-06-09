@@ -57,7 +57,7 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 	}
 
 	public Integer getMedido() {
-		return leitura.getLeitura();
+		return leitura.getMedido();
 
 	}
 

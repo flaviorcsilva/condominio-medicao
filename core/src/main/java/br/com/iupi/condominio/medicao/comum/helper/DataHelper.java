@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.helper;
+package br.com.iupi.condominio.medicao.comum.helper;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,5 +25,4 @@ public class DataHelper {
 
 		return date;
 	}
-
 }

@@ -1,38 +1,36 @@
 package br.com.iupi.condominio.medicao.unidade.service;
 
-import java.util.HashMap;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
-import javax.inject.Singleton;
-
+import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
+import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
+import br.com.iupi.condominio.medicao.unidade.dao.UnidadeDAO;
 import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
 
-@Singleton
+@Stateless
 public class UnidadeService {
 
-	private static final HashMap<String, Unidade> unidades = new HashMap<String, Unidade>();
+	@Inject
+	private UnidadeDAO dao;
 
-	static {
-		unidades.put("211", new Unidade("211", "Apartamento 211"));
-		unidades.put("212", new Unidade("212", "Apartamento 212"));
-		unidades.put("213", new Unidade("213", "Apartamento 213"));
-		unidades.put("214", new Unidade("214", "Apartamento 214"));
-		unidades.put("geral", new Unidade("geral", "Condominio"));
+	public Unidade consultaUnidade(String unidade) {
+		Unidade unidadeCondominio = dao.consultaPorUnidadeCondominio(unidade, "privilege");
+
+		if (unidadeCondominio == null) {
+			throw new NegocioException(Mensagem.UNIDADE_NAO_EXISTENTE);
+		}
+
+		return unidadeCondominio;
 	}
 
-	public UnidadeService() {
-	}
+	public boolean existeUnidade(String unidade) {
+		Unidade u = consultaUnidade(unidade);
 
-	public static Unidade consultaUnidade(String unidade) {
-		return unidades.get(unidade);
-	}
-	
-	public static boolean existeUnidade(String unidade) {
-		Unidade u = unidades.get(unidade);
-		
 		if (u == null) {
 			return false;
 		}
-		
+
 		return true;
 	}
 }

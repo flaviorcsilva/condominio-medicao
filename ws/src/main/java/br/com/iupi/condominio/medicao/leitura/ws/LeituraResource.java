@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,7 +18,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
 import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.helper.DataHelper;
+import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
 import br.com.iupi.condominio.medicao.leitura.dto.LeituraDTO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.leitura.service.LeituraService;
@@ -26,13 +27,16 @@ import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
 @Path("/leitura")
 @Stateless
 public class LeituraResource {
-	
+
+	@Inject
+	private LeituraService service;
+
 	@GET
 	@Path("/{unidade}/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public LeituraDTO leitura(@PathParam("unidade") String unidade, @PathParam("id") Integer id) {
-		Leitura leitura = LeituraService.consultaLeitura(id);
-		
+	public LeituraDTO leitura(@PathParam("unidade") String unidade, @PathParam("id") Long id) {
+		Leitura leitura = service.consultaLeitura(id);
+
 		return new LeituraDTO(leitura);
 	}
 
@@ -54,8 +58,8 @@ public class LeituraResource {
 						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
 			}
 
-			Integer id = LeituraService.registraLeitura(unidade, dataLeitura, tipoMedidor, medido);
-			leitura = LeituraService.consultaLeitura(id);
+			Long id = service.registraLeitura(unidade, dataLeitura, tipoMedidor, medido);
+			leitura = service.consultaLeitura(id);
 
 			System.out
 					.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);

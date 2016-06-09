@@ -1,50 +1,42 @@
 package br.com.iupi.condominio.medicao.medidor.dao;
 
-import java.util.Map;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.GenericMapDAO;
+import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
 import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
 
-public class MedidorDAO extends GenericMapDAO<String, Medidor> {
+@Stateless
+public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 
-	private Map<String, Medidor> medidores = hashMap;
+	@PersistenceContext(unitName = "condominio-pu")
+	private EntityManager entityManager;
 
-	{
-		Unidade unidade = new Unidade();
-		unidade.setCondominio("Privilege Noroeste");
-		unidade.setUnidade("212");
-
-		Medidor medidorAguaFria = new Medidor();
-		medidorAguaFria.setUnidade(unidade);
-		medidorAguaFria.setTipo(TipoMedidor.AGUA_FRIA);
-		medidorAguaFria.setNumero("A14E012523");
-
-		insere(medidorAguaFria);
-
-		Medidor medidorAguaQuente = new Medidor();
-		medidorAguaQuente.setUnidade(unidade);
-		medidorAguaQuente.setTipo(TipoMedidor.AGUA_QUENTE);
-		medidorAguaQuente.setNumero("A13F011417");
-
-		insere(medidorAguaQuente);
-
-		Medidor medidorGas = new Medidor();
-		medidorGas.setUnidade(unidade);
-		medidorGas.setTipo(TipoMedidor.GAS);
-		medidorGas.setNumero("B14D0001552D");
-
-		insere(medidorGas);
+	public MedidorDAO() {
+		super(Medidor.class);
 	}
 
-	public Medidor consultaPorTipo(TipoMedidor tipo) {
-		for (Medidor medidor : medidores.values()) {
-			if (medidor.getTipo().equals(tipo)) {
-				return medidor;
-			}
-		}
+	@Override
+	public EntityManager getEntityManager() {
+		return entityManager;
+	}
 
-		return null;
+	public Medidor consultaPorNumero(String numero) {
+		return entityManager.find(Medidor.class, numero);
+	}
+
+	public Medidor consultaPorUnidadeTipo(Unidade unidade, TipoMedidor tipo) {
+		String sql = "FROM " + Medidor.class.getName()
+				+ " as medidor WHERE medidor.unidade = :unidade AND medidor.tipo = :tipo";
+
+		Query query = getEntityManager().createQuery(sql);
+		query.setParameter("unidade", unidade);
+		query.setParameter("tipo", tipo);
+
+		return (Medidor) query.getSingleResult();
 	}
 }

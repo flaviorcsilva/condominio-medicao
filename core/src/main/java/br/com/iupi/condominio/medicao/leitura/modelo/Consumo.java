@@ -12,7 +12,7 @@ public class Consumo {
 	}
 
 	public Integer getMedido() {
-		return leituraAtual.getLeitura() - leituraAnterior.getLeitura();
+		return leituraAtual.getMedido() - leituraAnterior.getMedido();
 	}
 
 	public Double getPreco() {

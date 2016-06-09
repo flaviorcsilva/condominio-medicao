@@ -1,14 +1,28 @@
 package br.com.iupi.condominio.medicao.medidor.modelo;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
 
-public class Medidor extends Entidade<String> {
+@Entity
+public class Medidor extends Entidade {
 
+	@Id
+	@Column(name = "nu_medidor")
 	private String numero;
 
+	@Enumerated(EnumType.ORDINAL)
+	@Column(name = "tp_medidor")
 	private TipoMedidor tipo;
 
+	@ManyToOne
+	@Column(name = "id_unidade")
 	private Unidade unidade;
 
 	public Medidor() {
@@ -20,14 +34,6 @@ public class Medidor extends Entidade<String> {
 		this.numero = numero;
 		this.tipo = tipo;
 		this.unidade = unidade;
-	}
-
-	public String getId() {
-		return numero;
-	}
-
-	public void setId(String id) {
-		this.numero = id;
 	}
 
 	public String getNumero() {

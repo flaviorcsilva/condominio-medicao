@@ -35,7 +35,10 @@ public enum Mensagem {
 	LEITURA_DATA_JA_EXISTE_MEDICAO("leitura.data_ja_existe_medicao"), //
 		
 	/* Unidade */
-	UNIDADE_NAO_EXISTENTE("unidade.nao_existente");
+	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
+	
+	/* Medidor */
+	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente");
 
 	private static final String NAO_EXISTE_CHAVE = "Acrescente a chave '%s' no arquivo src/main/resources/mensagens/"
 			+ "mensagensDeErro.properties";

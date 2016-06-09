@@ -61,12 +61,12 @@ public class ConsumoTest {
 		Leitura leituraAnterior = new Leitura();
 		leituraAnterior.setMedidor(medidorAguaFria);
 		leituraAnterior.setDataLeitura(mesAnterior);
-		leituraAnterior.setLeitura(12406);
+		leituraAnterior.setMedido(12406);
 
 		Leitura leituraAtual = new Leitura();
 		leituraAtual.setMedidor(medidorAguaFria);
 		leituraAtual.setDataLeitura(mesAtual);
-		leituraAtual.setLeitura(13672);
+		leituraAtual.setMedido(13672);
 
 		assertEquals(leituraAnterior.getMedidor().getNumero(), leituraAtual.getMedidor().getNumero());
 

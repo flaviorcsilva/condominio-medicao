@@ -1,14 +1,5 @@
 package br.com.iupi.condominio.medicao.comum.persistencia;
 
-public class Entidade<PK> {
+public class Entidade {
 
-	private PK id;
-
-	public PK getId() {
-		return id;
-	}
-
-	public void setId(PK id) {
-		this.id = id;
-	}
 }

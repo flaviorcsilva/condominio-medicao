@@ -3,30 +3,45 @@ package br.com.iupi.condominio.medicao.leitura.modelo;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 
-@XmlRootElement
-public class Leitura extends Entidade<Long> {
+@Entity
+public class Leitura extends Entidade {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id_leitura")
 	private Long id;
 
+	@OneToOne
+	@Column(name = "nu_medidor")
 	private Medidor medidor;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "dt_leitura", nullable = false)
 	private LocalDate dataLeitura;
 
-	private Integer leitura;
+	@Column(name = "vl_medido")
+	private Integer medido;
 
 	public Leitura() {
 	}
 
-	public Leitura(Medidor medidor, LocalDate dataLeitura, Integer leitura) {
+	public Leitura(Medidor medidor, LocalDate dataLeitura, Integer medido) {
 		super();
 		this.medidor = medidor;
 		this.dataLeitura = dataLeitura;
-		this.leitura = leitura;
+		this.medido = medido;
 	}
 
 	public Long getId() {
@@ -59,11 +74,11 @@ public class Leitura extends Entidade<Long> {
 		this.dataLeitura = dataLeitura;
 	}
 
-	public Integer getLeitura() {
-		return leitura;
+	public Integer getMedido() {
+		return medido;
 	}
 
-	public void setLeitura(Integer leitura) {
-		this.leitura = leitura;
+	public void setMedido(Integer medido) {
+		this.medido = medido;
 	}
 }
