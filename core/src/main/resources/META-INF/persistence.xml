@@ -18,7 +18,7 @@
 		
 		<properties>
 			<property name="hibernate.id.new_generator_mappings" value="false" />
-			<property name="hibernate.hbm2ddl.auto" value="vqlidate" />
+			<property name="hibernate.hbm2ddl.auto" value="validate" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>

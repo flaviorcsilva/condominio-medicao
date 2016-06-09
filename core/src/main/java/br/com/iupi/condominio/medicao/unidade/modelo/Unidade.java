@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
@@ -30,7 +31,7 @@ public class Unidade extends Entidade {
 	@Column(name = "ds_unidade")
 	private String descricao;
 
-	//@OneToMany(mappedBy = "medidor")
+	@OneToMany(mappedBy = "numero")
 	private List<Medidor> medidores = new ArrayList<Medidor>();
 
 	public Unidade() {

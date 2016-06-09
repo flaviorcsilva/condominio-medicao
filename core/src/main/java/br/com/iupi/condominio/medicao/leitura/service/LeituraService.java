@@ -6,8 +6,8 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.persistencia.LeituraDAO;
 import br.com.iupi.condominio.medicao.comum.validacao.Assert;
+import br.com.iupi.condominio.medicao.leitura.dao.LeituraDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;

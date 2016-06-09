@@ -1,9 +1,10 @@
-package br.com.iupi.condominio.medicao.comum.persistencia;
+package br.com.iupi.condominio.medicao.leitura.dao;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 
 @Stateless

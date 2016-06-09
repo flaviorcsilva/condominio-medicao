@@ -8,7 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
@@ -21,8 +22,8 @@ public class Leitura extends Entidade {
 	@Column(name = "id_leitura")
 	private Long id;
 
-	@OneToOne
-	@Column(name = "nu_medidor")
+	@ManyToOne
+	@JoinColumn(name = "nu_medidor")
 	private Medidor medidor;
 
 	@Column(name = "dt_leitura", nullable = false)
