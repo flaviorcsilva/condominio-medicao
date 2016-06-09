@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
@@ -27,7 +25,6 @@ public class Leitura extends Entidade {
 	@Column(name = "nu_medidor")
 	private Medidor medidor;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "dt_leitura", nullable = false)
 	private LocalDate dataLeitura;
 

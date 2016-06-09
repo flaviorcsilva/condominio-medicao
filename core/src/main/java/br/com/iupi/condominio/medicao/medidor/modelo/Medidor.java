@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
@@ -21,7 +20,8 @@ public class Medidor extends Entidade {
 	@Column(name = "tp_medidor")
 	private TipoMedidor tipo;
 
-	@ManyToOne
+	//@ManyToOne
+	//@OneToOne
 	@Column(name = "id_unidade")
 	private Unidade unidade;
 
