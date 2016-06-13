@@ -2,7 +2,6 @@ package br.com.iupi.condominio.medicao.leitura.ws;
 
 import java.net.URI;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,9 +47,8 @@ public class LeituraResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<LeituraDTO> leituras(@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes,
 			@QueryParam("ano") Integer ano) {
-		YearMonth mesAno = YearMonth.of(ano, mes);
-		LocalDate inicioMes = mesAno.atDay(1);
-		LocalDate finalMes = mesAno.atEndOfMonth();
+		LocalDate inicioMes = DataHelper.getInicioDeMes(mes, ano);
+		LocalDate finalMes = DataHelper.getFinalDeMes(mes, ano);
 
 		List<Leitura> leituras = service.consultaLeituras(unidade, inicioMes, finalMes);
 

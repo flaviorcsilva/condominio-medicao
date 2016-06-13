@@ -10,7 +10,8 @@ import javax.persistence.Query;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 @Stateless
 public class LeituraDAO extends AbstractGenericDAO<Leitura> {
@@ -32,19 +33,39 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Leitura> consultaPorUnidadeMesAno(Unidade unidadeCondominio, LocalDate inicioMes, LocalDate finalMes) {
+	public List<Leitura> consultaPorUnidadePeriodo(UnidadeConsumidora unidadeConsumidora, LocalDate inicioMes,
+			LocalDate finalMes) {
 		StringBuilder sql = new StringBuilder();
-		
-		sql.append("FROM " + Leitura.class.getName() + " as leitura ");
-		sql.append("WHERE leitura.medidor.unidade = :unidade ");
-		sql.append("AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes");
+
+		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
+		sql.append("WHERE leitura.medidor.unidadeConsumidora = :unidadeConsumidora ");
+		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes");
 
 		Query query = entityManager.createQuery(sql.toString());
 
-		query.setParameter("unidade", unidadeCondominio);
+		query.setParameter("unidadeConsumidora", unidadeConsumidora);
 		query.setParameter("inicioMes", inicioMes);
 		query.setParameter("finalMes", finalMes);
 
 		return query.getResultList();
+	}
+
+	public Leitura consultaPorUnidadeTipoPeriodo(UnidadeConsumidora unidadeConsumidora, TipoMedidor tipo,
+			LocalDate inicioMes, LocalDate finalMes) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
+		sql.append("WHERE leitura.medidor.unidadeConsumidora = :unidadeConsumidora ");
+		sql.append("  AND leitura.medidor.tipo = :tipo");
+		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes");
+
+		Query query = entityManager.createQuery(sql.toString());
+
+		query.setParameter("unidadeConsumidora", unidadeConsumidora);
+		query.setParameter("tipo", tipo);
+		query.setParameter("inicioMes", inicioMes);
+		query.setParameter("finalMes", finalMes);
+
+		return (Leitura) query.getSingleResult();
 	}
 }

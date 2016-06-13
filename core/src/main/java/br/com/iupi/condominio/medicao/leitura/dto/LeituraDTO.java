@@ -24,9 +24,9 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 	}
 
 	public String getUnidade() {
-		if (leitura.getMedidor() != null && leitura.getMedidor().getUnidade() != null
-				&& StringUtils.isNotBlank(leitura.getMedidor().getUnidade().getUnidade())) {
-			return leitura.getMedidor().getUnidade().getUnidade();
+		if (leitura.getMedidor() != null && leitura.getMedidor().getUnidadeConsumidora() != null
+				&& StringUtils.isNotBlank(leitura.getMedidor().getUnidadeConsumidora().getUnidade())) {
+			return leitura.getMedidor().getUnidadeConsumidora().getUnidade();
 		}
 
 		return NI;
@@ -34,7 +34,7 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 
 	public String getTipoMedidor() {
 		if (leitura.getMedidor() != null && leitura.getMedidor().getTipo() != null) {
-			return leitura.getMedidor().getTipo().toString();
+			return leitura.getMedidor().getTipo().getValor();
 		}
 
 		return NI;

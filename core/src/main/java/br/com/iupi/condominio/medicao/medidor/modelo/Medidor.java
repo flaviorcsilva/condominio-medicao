@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
-import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
+import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 @Entity
 public class Medidor extends Entidade {
@@ -24,17 +24,17 @@ public class Medidor extends Entidade {
 
 	@ManyToOne
 	@JoinColumn(name = "id_unidade")
-	private Unidade unidade;
+	private UnidadeConsumidora unidadeConsumidora;
 
 	public Medidor() {
 		// Construtor padrão
 	}
 
-	public Medidor(String numero, TipoMedidor tipo, Unidade unidade) {
+	public Medidor(String numero, TipoMedidor tipo, UnidadeConsumidora unidadeConsumidora) {
 		super();
 		this.numero = numero;
 		this.tipo = tipo;
-		this.unidade = unidade;
+		this.unidadeConsumidora = unidadeConsumidora;
 	}
 
 	public String getNumero() {
@@ -53,11 +53,11 @@ public class Medidor extends Entidade {
 		this.tipo = tipo;
 	}
 
-	public Unidade getUnidade() {
-		return unidade;
+	public UnidadeConsumidora getUnidadeConsumidora() {
+		return unidadeConsumidora;
 	}
 
-	public void setUnidade(Unidade unidade) {
-		this.unidade = unidade;
+	public void setUnidadeConsumidora(UnidadeConsumidora unidadeConsumidora) {
+		this.unidadeConsumidora = unidadeConsumidora;
 	}
 }

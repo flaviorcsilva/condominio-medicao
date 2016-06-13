@@ -21,7 +21,10 @@ import java.util.ResourceBundle;
 public enum Mensagem {
 
 	/* Mensagens Genéricas */
-	DATA_ERRO_CONVERSAO("data.erro_conversao"), //
+	DATA_ERRO_CONVERSAO_FORMATO_DATA("data.erro_conversao_formato_data"), //
+	DATA_ERRO_CONVERSAO_FORMATO_DATA_HORA("data.erro_conversao_formato_data_hora"), //
+	DATA_ERRO_CONVERSAO_FORMATO_HORA("data.erro_conversao_formato_hora"), //
+	DATA_ERRO_CONVERSAO_MES_ANO("data.erro_conversao_mes_ano"), //
 	CAMPOS_ID_OBRIGATORIO("campos.id_obrigatorio"), //
 	CAMPOS_OBRIGATORIOS_NAO_PREENCHIDOS("campos.obrigatorios_nao_preenchidos"), //
 	PARAMETRO_OBRIGATORIO("infra.parametro_obrigatorio"), //
@@ -35,7 +38,7 @@ public enum Mensagem {
 	LEITURA_DATA_JA_EXISTE_MEDICAO("leitura.data_ja_existe_medicao"), //
 	LEITURA_NAO_EXISTENTE("leitura.nao_existente"), //
 		
-	/* Unidade */
+	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
 	
 	/* Medidor */

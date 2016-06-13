@@ -1,6 +1,7 @@
 package br.com.iupi.condominio.medicao.leitura.service;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,14 +9,15 @@ import javax.inject.Inject;
 
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
 import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
+import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
 import br.com.iupi.condominio.medicao.comum.validacao.Assert;
 import br.com.iupi.condominio.medicao.leitura.dao.LeituraDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
 import br.com.iupi.condominio.medicao.medidor.service.MedidorService;
-import br.com.iupi.condominio.medicao.unidade.modelo.Unidade;
-import br.com.iupi.condominio.medicao.unidade.service.UnidadeService;
+import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
 
 @Stateless
 public class LeituraService {
@@ -24,7 +26,7 @@ public class LeituraService {
 	private LeituraDAO dao;
 
 	@Inject
-	private UnidadeService unidadeService;
+	private UnidadeConsumidoraService unidadeConsumidoraService;
 
 	@Inject
 	private MedidorService medidorService;
@@ -37,7 +39,7 @@ public class LeituraService {
 		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
 
 		// verifica se a undiade existe nesse condomínio
-		Unidade unidadeCondominio = unidadeService.consultaUnidade(unidade);
+		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
 
 		/*
 		 * // verifica se já existe leitura realizada para o mês desta unidade
@@ -66,11 +68,24 @@ public class LeituraService {
 	}
 
 	public List<Leitura> consultaLeituras(String unidade, LocalDate inicioMes, LocalDate finalMes) {
-		Unidade unidadeCondominio = unidadeService.consultaUnidade(unidade);
+		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
 
-		List<Leitura> leituras = dao.consultaPorUnidadeMesAno(unidadeCondominio, inicioMes, finalMes);
+		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeCondominio, inicioMes, finalMes);
 
 		return leituras;
+	}
+
+	public Leitura consultaLeitura(YearMonth mesAno, UnidadeConsumidora unidadeConsumidora, TipoMedidor tipoLeitura) {
+		LocalDate inicioMes = DataHelper.getInicioDeMes(mesAno);
+		LocalDate finalMes = DataHelper.getFinalDeMes(mesAno);
+
+		Leitura leitura = dao.consultaPorUnidadeTipoPeriodo(unidadeConsumidora, tipoLeitura, inicioMes, finalMes);
+
+		if (leitura == null) {
+			// throw new
+		}
+
+		return leitura;
 	}
 
 	/*

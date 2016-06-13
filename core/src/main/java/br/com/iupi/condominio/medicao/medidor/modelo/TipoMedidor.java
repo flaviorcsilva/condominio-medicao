@@ -1,33 +1,44 @@
 package br.com.iupi.condominio.medicao.medidor.modelo;
 
 public enum TipoMedidor {
-	
-	AGUA_FRIA(1), AGUA_QUENTE(2), GAS(3);
-	
-	private Integer id;
-	
-	private TipoMedidor(Integer id) {
-		this.id = id;
+
+	AGUA_FRIA(1, "Água Fria"), AGUA_QUENTE(2, "Água Quente"), GAS(3, "Gás");
+
+	private Integer chave;
+
+	private String valor;
+
+	private TipoMedidor(Integer chave, String valor) {
+		this.chave = chave;
+		this.setValor(valor);
 	}
-	
-	public static TipoMedidor get (Integer id) {
+
+	public static TipoMedidor get(Integer chave) {
 		TipoMedidor tipo = null;
 		for (TipoMedidor tipoMedidor : TipoMedidor.values()) {
-			if(tipoMedidor.getId().equals(id)){
+			if (tipoMedidor.getChave().equals(chave)) {
 				tipo = tipoMedidor;
-				
+
 				break;
 			}
 		}
-		
+
 		return tipo;
 	}
-	
-	public Integer getId() {
-		return id;
+
+	public Integer getChave() {
+		return chave;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}	
+	public void setChave(Integer chave) {
+		this.chave = chave;
+	}
+
+	public String getValor() {
+		return valor;
+	}
+
+	public void setValor(String valor) {
+		this.valor = valor;
+	}
 }

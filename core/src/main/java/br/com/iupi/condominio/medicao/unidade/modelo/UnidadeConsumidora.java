@@ -1,6 +1,5 @@
 package br.com.iupi.condominio.medicao.unidade.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -9,13 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
 
 @Entity
-public class Unidade extends Entidade {
+@Table(name = "unidade")
+public class UnidadeConsumidora extends Entidade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,18 +33,17 @@ public class Unidade extends Entidade {
 	private String descricao;
 
 	@OneToMany(mappedBy = "numero")
-	private List<Medidor> medidores = new ArrayList<Medidor>();
+	private List<Medidor> medidores;
 
-	public Unidade() {
+	public UnidadeConsumidora() {
 		//
 	}
 
-	public Unidade(String unidade, String descricao) {
+	public UnidadeConsumidora(String unidade, String descricao) {
 		super();
 		this.condominio = "Privilege Noroeste";
 		this.unidade = unidade;
 		this.descricao = descricao;
-		this.medidores = new ArrayList<Medidor>();
 	}
 
 	public Long getId() {
