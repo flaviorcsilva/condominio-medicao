@@ -1,13 +1,13 @@
 package br.com.iupi.condominio.medicao.medidor.modelo;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import br.com.iupi.condominio.medicao.comum.converter.TipoMedidorConverter;
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
@@ -18,8 +18,8 @@ public class Medidor extends Entidade {
 	@Column(name = "nu_medidor")
 	private String numero;
 
-	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "tp_medidor")
+	@Convert(converter = TipoMedidorConverter.class)
 	private TipoMedidor tipo;
 
 	@ManyToOne

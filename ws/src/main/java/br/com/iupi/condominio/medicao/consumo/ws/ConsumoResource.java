@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.leitura.ws;
+package br.com.iupi.condominio.medicao.consumo.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +34,11 @@ public class ConsumoResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<ConsumoDTO> consumo(@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes,
 			@QueryParam("ano") Integer ano) {
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
+		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
 
-		Consumo consumoAguaFria = service.consultaConsumo(unidadeCondominio, TipoMedidor.AGUA_FRIA, mes, ano);
-		Consumo consumoAguaQuente = service.consultaConsumo(unidadeCondominio, TipoMedidor.AGUA_QUENTE, mes, ano);
-		Consumo consumoGas = service.consultaConsumo(unidadeCondominio, TipoMedidor.GAS, mes, ano);
+		Consumo consumoAguaFria = service.consultaConsumo(unidadeConsumidora, TipoMedidor.AGUA_FRIA, mes, ano);
+		Consumo consumoAguaQuente = service.consultaConsumo(unidadeConsumidora, TipoMedidor.AGUA_QUENTE, mes, ano);
+		Consumo consumoGas = service.consultaConsumo(unidadeConsumidora, TipoMedidor.GAS, mes, ano);
 
 		List<ConsumoDTO> consumos = new ArrayList<ConsumoDTO>();
 		consumos.add(new ConsumoDTO(consumoAguaFria));

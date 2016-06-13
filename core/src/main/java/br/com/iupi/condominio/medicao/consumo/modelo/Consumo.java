@@ -31,10 +31,18 @@ public class Consumo {
 	}
 
 	public Integer getMedido() {
-		return leituraAtual.getMedido() - leituraAnterior.getMedido();
+		if (leituraAtual != null && leituraAnterior != null) {
+			return leituraAtual.getMedido() - leituraAnterior.getMedido();
+		}
+
+		return -1;
 	}
 
 	public Double getValor() {
+		if (getMedido() == -1) {
+			return -1.0;
+		}
+
 		return getMedido() * valorM3;
 	}
 }

@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -29,7 +32,7 @@ public abstract class AbstractGenericDAO<ENTITY extends Entidade> {
 	 * @return EntityManager
 	 */
 	public abstract EntityManager getEntityManager();
-	
+
 	public AbstractGenericDAO(Class<ENTITY> classEntity) {
 		this.classEntity = classEntity;
 	}
@@ -98,5 +101,22 @@ public abstract class AbstractGenericDAO<ENTITY extends Entidade> {
 		}
 
 		return query.getResultList().get(0);
+	}
+
+	protected ENTITY getSingleResult(Query query) {
+		try {
+			@SuppressWarnings("unchecked")
+			ENTITY returnValue = (ENTITY) query.getSingleResult();
+
+			return returnValue;
+		} catch (NoResultException nre) {
+			nre.printStackTrace();
+			
+			return null;
+		} catch (NonUniqueResultException nure) {
+			nure.printStackTrace();
+
+			return null;
+		}
 	}
 }

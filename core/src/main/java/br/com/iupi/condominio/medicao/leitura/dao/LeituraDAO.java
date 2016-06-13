@@ -66,6 +66,6 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		query.setParameter("inicioMes", inicioMes);
 		query.setParameter("finalMes", finalMes);
 
-		return (Leitura) query.getSingleResult();
+		return getSingleResult(query);
 	}
 }

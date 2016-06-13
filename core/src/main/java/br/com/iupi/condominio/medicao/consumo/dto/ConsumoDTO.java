@@ -1,12 +1,15 @@
 package br.com.iupi.condominio.medicao.consumo.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
 
 @XmlRootElement
+@XmlType(propOrder = { "unidade", "tipo", "dataLeituraAnterior", "medicaoAnterior", "dataLeituraAtual", "medicaoAtual",
+		"medido", "valorM3", "valor" })
 public class ConsumoDTO {
 
 	private static final String NI = "--";

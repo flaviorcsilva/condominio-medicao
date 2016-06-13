@@ -37,6 +37,6 @@ public class UnidadeConsumidoraDAO extends AbstractGenericDAO<UnidadeConsumidora
 		query.setParameter("unidade", unidade);
 		query.setParameter("condominio", condominio);
 
-		return (UnidadeConsumidora) query.getSingleResult();
+		return getSingleResult(query);
 	}
 }

@@ -41,6 +41,6 @@ public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 		query.setParameter("unidadeConsumidora", unidadeConsumidora);
 		query.setParameter("tipoMedidor", tipoMedidor);
 
-		return (Medidor) query.getSingleResult();
+		return getSingleResult(query);
 	}
 }
