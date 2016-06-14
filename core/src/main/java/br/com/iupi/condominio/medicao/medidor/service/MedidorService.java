@@ -9,7 +9,7 @@ import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
 import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
 import br.com.iupi.condominio.medicao.medidor.dao.MedidorDAO;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
 
@@ -26,7 +26,7 @@ public class MedidorService {
 		return dao.consultaPorNumero(numero);
 	}
 
-	public Medidor consultaMedidor(UnidadeConsumidora unidadeConsumidora, TipoMedidor tipo) {
+	public Medidor consultaMedidor(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipo) {
 		Medidor medidor = dao.consultaPorUnidadeTipo(unidadeConsumidora, tipo);
 
 		if (medidor == null) {

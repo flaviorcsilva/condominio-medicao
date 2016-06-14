@@ -1,6 +1,6 @@
 package br.com.iupi.condominio.medicao.medidor.modelo;
 
-public enum TipoMedidor {
+public enum TipoMedicao {
 
 	AGUA_FRIA(1, "Água Fria"), AGUA_QUENTE(2, "Água Quente"), GAS(3, "Gás");
 
@@ -8,16 +8,16 @@ public enum TipoMedidor {
 
 	private String valor;
 
-	private TipoMedidor(Integer chave, String valor) {
+	private TipoMedicao(Integer chave, String valor) {
 		this.chave = chave;
 		this.setValor(valor);
 	}
 
-	public static TipoMedidor get(Integer chave) {
-		TipoMedidor tipo = null;
-		for (TipoMedidor tipoMedidor : TipoMedidor.values()) {
-			if (tipoMedidor.getChave().equals(chave)) {
-				tipo = tipoMedidor;
+	public static TipoMedicao get(Integer chave) {
+		TipoMedicao tipo = null;
+		for (TipoMedicao tipoMedicao : TipoMedicao.values()) {
+			if (tipoMedicao.getChave().equals(chave)) {
+				tipo = tipoMedicao;
 
 				break;
 			}

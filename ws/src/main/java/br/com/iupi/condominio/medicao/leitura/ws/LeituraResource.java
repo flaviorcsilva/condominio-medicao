@@ -24,7 +24,7 @@ import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
 import br.com.iupi.condominio.medicao.leitura.dto.LeituraDTO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.leitura.service.LeituraService;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 
 @Path("/leitura")
 @Stateless
@@ -72,13 +72,13 @@ public class LeituraResource {
 			LocalDate dataLeitura = DataHelper.convertStringToLocalDate(data);
 
 			// valida o tipo da leitura
-			TipoMedidor tipoMedidor = TipoMedidor.get(tipo);
-			if (tipoMedidor == null) {
+			TipoMedicao tipoMedicao = TipoMedicao.get(tipo);
+			if (tipoMedicao == null) {
 				throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
 						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
 			}
 
-			Long id = service.registraLeitura(unidade, dataLeitura, tipoMedidor, medido);
+			Long id = service.registraLeitura(unidade, dataLeitura, tipoMedicao, medido);
 			leitura = service.consultaLeitura(id);
 
 			System.out

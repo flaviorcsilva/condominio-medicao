@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 
 @Entity
 @Table(name = "unidade")
@@ -82,7 +82,7 @@ public class UnidadeConsumidora extends Entidade {
 		return medidores;
 	}
 
-	public Medidor getMedidor(TipoMedidor tipo) {
+	public Medidor getMedidor(TipoMedicao tipo) {
 		for (Medidor medidor : medidores) {
 			if (medidor.getTipo().equals(tipo)) {
 				return medidor;

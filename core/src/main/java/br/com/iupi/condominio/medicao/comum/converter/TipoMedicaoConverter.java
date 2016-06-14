@@ -3,13 +3,13 @@ package br.com.iupi.condominio.medicao.comum.converter;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 
 @Converter(autoApply = true)
-public class TipoMedidorConverter implements AttributeConverter<TipoMedidor, Integer> {
+public class TipoMedicaoConverter implements AttributeConverter<TipoMedicao, Integer> {
 
 	@Override
-	public Integer convertToDatabaseColumn(TipoMedidor attribute) {
+	public Integer convertToDatabaseColumn(TipoMedicao attribute) {
 		switch (attribute) {
 		case AGUA_FRIA:
 			return 1;
@@ -23,14 +23,14 @@ public class TipoMedidorConverter implements AttributeConverter<TipoMedidor, Int
 	}
 
 	@Override
-	public TipoMedidor convertToEntityAttribute(Integer value) {
+	public TipoMedicao convertToEntityAttribute(Integer value) {
 		switch (value) {
 		case 1:
-			return TipoMedidor.AGUA_FRIA;
+			return TipoMedicao.AGUA_FRIA;
 		case 2:
-			return TipoMedidor.AGUA_QUENTE;
+			return TipoMedicao.AGUA_QUENTE;
 		case 3:
-			return TipoMedidor.GAS;
+			return TipoMedicao.GAS;
 		default:
 			throw new IllegalArgumentException("Unknown" + value);
 		}

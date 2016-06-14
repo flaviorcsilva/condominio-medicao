@@ -15,7 +15,7 @@ import javax.ws.rs.core.MediaType;
 import br.com.iupi.condominio.medicao.consumo.dto.ConsumoDTO;
 import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
 import br.com.iupi.condominio.medicao.consumo.service.ConsumoService;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
 
@@ -36,9 +36,9 @@ public class ConsumoResource {
 			@QueryParam("ano") Integer ano) {
 		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
 
-		Consumo consumoAguaFria = service.consultaConsumo(unidadeConsumidora, TipoMedidor.AGUA_FRIA, mes, ano);
-		Consumo consumoAguaQuente = service.consultaConsumo(unidadeConsumidora, TipoMedidor.AGUA_QUENTE, mes, ano);
-		Consumo consumoGas = service.consultaConsumo(unidadeConsumidora, TipoMedidor.GAS, mes, ano);
+		Consumo consumoAguaFria = service.consultaConsumo(unidadeConsumidora, TipoMedicao.AGUA_FRIA, mes, ano);
+		Consumo consumoAguaQuente = service.consultaConsumo(unidadeConsumidora, TipoMedicao.AGUA_QUENTE, mes, ano);
+		Consumo consumoGas = service.consultaConsumo(unidadeConsumidora, TipoMedicao.GAS, mes, ano);
 
 		List<ConsumoDTO> consumos = new ArrayList<ConsumoDTO>();
 		consumos.add(new ConsumoDTO(consumoAguaFria));

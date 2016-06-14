@@ -10,7 +10,7 @@ import javax.persistence.Query;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 @Stateless
@@ -50,7 +50,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		return query.getResultList();
 	}
 
-	public Leitura consultaPorUnidadeTipoPeriodo(UnidadeConsumidora unidadeConsumidora, TipoMedidor tipo,
+	public Leitura consultaPorUnidadeTipoPeriodo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao,
 			LocalDate inicioMes, LocalDate finalMes) {
 		StringBuilder sql = new StringBuilder();
 
@@ -62,7 +62,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		Query query = entityManager.createQuery(sql.toString());
 
 		query.setParameter("unidadeConsumidora", unidadeConsumidora);
-		query.setParameter("tipo", tipo);
+		query.setParameter("tipo", tipoMedicao);
 		query.setParameter("inicioMes", inicioMes);
 		query.setParameter("finalMes", finalMes);
 

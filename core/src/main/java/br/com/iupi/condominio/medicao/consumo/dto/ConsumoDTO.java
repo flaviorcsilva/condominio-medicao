@@ -1,5 +1,7 @@
 package br.com.iupi.condominio.medicao.consumo.dto;
 
+import java.text.DecimalFormat;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -9,7 +11,7 @@ import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
 
 @XmlRootElement
 @XmlType(propOrder = { "unidade", "tipo", "dataLeituraAnterior", "medicaoAnterior", "dataLeituraAtual", "medicaoAtual",
-		"medido", "valorM3", "valor" })
+		"consumo", "fator", "valorM3", "valor" })
 public class ConsumoDTO {
 
 	private static final String NI = "--";
@@ -73,16 +75,22 @@ public class ConsumoDTO {
 		return 0;
 	}
 
-	public Integer getMedido() {
+	public Integer getConsumo() {
 		return consumo.getMedido();
 
+	}
+
+	public Integer getFator() {
+		return consumo.getFator();
 	}
 
 	public Double getValorM3() {
 		return consumo.getValorM3();
 	}
 
-	public Double getValor() {
-		return consumo.getValor();
+	public String getValor() {
+		DecimalFormat df = new DecimalFormat("###.##");
+
+		return df.format(consumo.getValor());
 	}
 }

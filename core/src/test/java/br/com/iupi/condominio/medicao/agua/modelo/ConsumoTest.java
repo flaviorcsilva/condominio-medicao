@@ -11,7 +11,7 @@ import org.junit.Test;
 import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 public class ConsumoTest {
@@ -30,17 +30,17 @@ public class ConsumoTest {
 
 		medidorAguaFria = new Medidor();
 		medidorAguaFria.setUnidadeConsumidora(unidadeConsumidora);
-		medidorAguaFria.setTipo(TipoMedidor.AGUA_FRIA);
+		medidorAguaFria.setTipo(TipoMedicao.AGUA_FRIA);
 		medidorAguaFria.setNumero("A14E012523");
 
 		medidorAguaQuente = new Medidor();
 		medidorAguaQuente.setUnidadeConsumidora(unidadeConsumidora);
-		medidorAguaQuente.setTipo(TipoMedidor.AGUA_QUENTE);
+		medidorAguaQuente.setTipo(TipoMedicao.AGUA_QUENTE);
 		medidorAguaQuente.setNumero("A13F011417");
 
 		medidorGas = new Medidor();
 		medidorGas.setUnidadeConsumidora(unidadeConsumidora);
-		medidorGas.setTipo(TipoMedidor.GAS);
+		medidorGas.setTipo(TipoMedicao.GAS);
 		medidorGas.setNumero("B14D0001552D");
 
 		unidadeConsumidora.addMedidor(medidorAguaFria);

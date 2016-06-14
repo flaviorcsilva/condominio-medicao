@@ -7,7 +7,7 @@ import javax.persistence.Query;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedidor;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 @Stateless
@@ -29,17 +29,17 @@ public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 		return entityManager.find(Medidor.class, numero);
 	}
 
-	public Medidor consultaPorUnidadeTipo(UnidadeConsumidora unidadeConsumidora, TipoMedidor tipoMedidor) {
+	public Medidor consultaPorUnidadeTipo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(" FROM " + Medidor.class.getName() + " as medidor ");
 		sql.append("WHERE medidor.unidadeConsumidora = :unidadeConsumidora ");
-		sql.append("  AND medidor.tipo = :tipoMedidor");
+		sql.append("  AND medidor.tipo = :tipoMedicao");
 
 		Query query = entityManager.createQuery(sql.toString());
 
 		query.setParameter("unidadeConsumidora", unidadeConsumidora);
-		query.setParameter("tipoMedidor", tipoMedidor);
+		query.setParameter("tipoMedicao", tipoMedicao);
 
 		return getSingleResult(query);
 	}
