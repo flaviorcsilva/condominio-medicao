@@ -78,8 +78,7 @@ public class LeituraResource {
 						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
 			}
 
-			Long id = service.registraLeitura(unidade, dataLeitura, tipoMedicao, medido);
-			leitura = service.consultaLeitura(id);
+			leitura = service.registraLeitura(unidade, dataLeitura, tipoMedicao, medido);
 
 			System.out
 					.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);

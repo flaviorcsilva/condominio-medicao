@@ -31,7 +31,7 @@ public class LeituraService {
 	@Inject
 	private MedidorService medidorService;
 
-	public Long registraLeitura(String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao, Integer medido) {
+	public Leitura registraLeitura(String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao, Integer medido) {
 		/* Validação de campos obrigatórios. */
 		Assert.notBlank(unidade, Mensagem.LEITURA_UNIDADE_OBRIGATORIA);
 		Assert.notNull(dataLeitura, Mensagem.LEITURA_DATA_OBRIGATORIA);
@@ -39,22 +39,24 @@ public class LeituraService {
 		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
 
 		// verifica se a undiade existe nesse condomínio
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
+		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
 
-		/*
-		 * // verifica se já existe leitura realizada para o mês desta unidade
-		 * if (existeLeituraParaData(unidade, dataLeitura, tipoMedidor)) { throw
-		 * new NegocioException(Mensagem.LEITURA_DATA_JA_EXISTE_MEDICAO); }
-		 */
+		// verifica se já existe leitura realizada para o mês desta unidade
+		YearMonth mesAno = YearMonth.of(dataLeitura.getYear(), dataLeitura.getMonth());
+		Leitura leituraNoMes = this.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAno);
+
+		if (leituraNoMes != null) {
+			throw new NegocioException(Mensagem.LEITURA_DATA_JA_EXISTE_MEDICAO);
+		}
 
 		// obtém o medidor da unidade
-		Medidor medidor = medidorService.consultaMedidor(unidadeCondominio, tipoMedicao);
+		Medidor medidor = medidorService.consultaMedidor(unidadeConsumidora, tipoMedicao);
 
 		Leitura leitura = new Leitura(medidor, dataLeitura, medido);
 
 		dao.insert(leitura);
 
-		return leitura.getId();
+		return leitura;
 	}
 
 	public Leitura consultaLeitura(Long id) {
@@ -75,7 +77,7 @@ public class LeituraService {
 		return leituras;
 	}
 
-	public Leitura consultaLeitura(YearMonth mesAno, UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao) {
+	public Leitura consultaLeitura(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, YearMonth mesAno) {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mesAno);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mesAno);
 
@@ -87,15 +89,4 @@ public class LeituraService {
 
 		return leitura;
 	}
-
-	/*
-	 * private static boolean existeLeituraParaData(String unidade, LocalDate
-	 * dataLeitura, TipoMedicao tipoMedidor) { for (Leitura leitura :
-	 * medicoes.values()) { if
-	 * (leitura.getMedidor().getUnidade().getUnidade().equals(unidade)) {
-	 * 
-	 * } }
-	 * 
-	 * return false; }
-	 */
 }

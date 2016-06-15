@@ -17,10 +17,11 @@ public class ConsumoService {
 
 	@Inject
 	private LeituraService leituraService;
-	
-	public Consumo consultaConsumo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, Integer mes, Integer ano) {
+
+	public Consumo consultaConsumo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, Integer mes,
+			Integer ano) {
 		Double valorM3 = 0.0; // TODO
-		
+
 		if (tipoMedicao.equals(TipoMedicao.GAS)) {
 			valorM3 = 3.20;
 		} else {
@@ -30,8 +31,8 @@ public class ConsumoService {
 		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
 		YearMonth mesAnterior = mesAtual.minusMonths(1);
 
-		Leitura leituraAnterior = leituraService.consultaLeitura(mesAnterior, unidadeConsumidora, tipoMedicao);
-		Leitura leituraAtual = leituraService.consultaLeitura(mesAtual, unidadeConsumidora, tipoMedicao);
+		Leitura leituraAnterior = leituraService.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAnterior);
+		Leitura leituraAtual = leituraService.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAtual);
 
 		return new Consumo(leituraAnterior, leituraAtual, valorM3);
 	}
