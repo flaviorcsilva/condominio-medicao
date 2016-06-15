@@ -10,6 +10,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:/condominioDS</jta-data-source>
 		
+		<class>br.com.iupi.condominio.medicao.condominio.modelo.Condominio</class>
 		<class>br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora</class>
 		<class>br.com.iupi.condominio.medicao.medidor.modelo.Medidor</class>
 		<class>br.com.iupi.condominio.medicao.leitura.modelo.Leitura</class>

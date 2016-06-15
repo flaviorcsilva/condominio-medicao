@@ -37,6 +37,9 @@ public enum Mensagem {
 	LEITURA_VALOR_MEDIDO_OBRIGATORIO("leitura.valor_medido_obrigatorio"), //
 	LEITURA_DATA_JA_EXISTE_MEDICAO("leitura.data_ja_existe_medicao"), //
 	LEITURA_NAO_EXISTENTE("leitura.nao_existente"), //
+	
+	/* Condominio */
+	CONDOMINIO_NAO_EXISTENTE("condominio.nao_existente"), //
 		
 	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
