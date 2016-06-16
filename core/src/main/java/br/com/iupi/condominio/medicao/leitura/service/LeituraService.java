@@ -31,7 +31,8 @@ public class LeituraService {
 	@Inject
 	private MedidorService medidorService;
 
-	public Leitura registraLeitura(String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao, Integer medido) {
+	public Leitura registraLeitura(String condominio, String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao,
+			Integer medido) {
 		/* Validação de campos obrigatórios. */
 		Assert.notBlank(unidade, Mensagem.LEITURA_UNIDADE_OBRIGATORIA);
 		Assert.notNull(dataLeitura, Mensagem.LEITURA_DATA_OBRIGATORIA);
@@ -39,7 +40,8 @@ public class LeituraService {
 		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
 
 		// verifica se a undiade existe nesse condomínio
-		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
+		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
+				unidade);
 
 		// verifica se já existe leitura realizada para o mês desta unidade
 		YearMonth mesAno = YearMonth.of(dataLeitura.getYear(), dataLeitura.getMonth());
@@ -69,8 +71,9 @@ public class LeituraService {
 		return leitura;
 	}
 
-	public List<Leitura> consultaLeituras(String unidade, LocalDate inicioMes, LocalDate finalMes) {
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
+	public List<Leitura> consultaLeituras(String condominio, String unidade, LocalDate inicioMes, LocalDate finalMes) {
+		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
+				unidade);
 
 		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeCondominio, inicioMes, finalMes);
 

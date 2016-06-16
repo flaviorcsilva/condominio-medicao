@@ -36,8 +36,9 @@ public class MedidorService {
 		return medidor;
 	}
 
-	public List<Medidor> consultaMedidores(String unidade) {
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(unidade);
+	public List<Medidor> consultaMedidores(String condominio, String unidade) {
+		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
+				unidade);
 
 		return unidadeCondominio.getMedidores();
 	}

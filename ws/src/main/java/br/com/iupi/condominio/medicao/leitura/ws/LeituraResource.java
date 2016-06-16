@@ -8,6 +8,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -45,12 +46,12 @@ public class LeituraResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<LeituraDTO> leituras(@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes,
-			@QueryParam("ano") Integer ano) {
+	public List<LeituraDTO> leituras(@HeaderParam("Client-ID") String condominio, @PathParam("unidade") String unidade,
+			@QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mes, ano);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mes, ano);
 
-		List<Leitura> leituras = service.consultaLeituras(unidade, inicioMes, finalMes);
+		List<Leitura> leituras = service.consultaLeituras(condominio, unidade, inicioMes, finalMes);
 
 		List<LeituraDTO> lista = new ArrayList<LeituraDTO>();
 		for (Leitura leitura : leituras) {
@@ -63,8 +64,8 @@ public class LeituraResource {
 	@POST
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response leitura(@PathParam("unidade") String unidade, @QueryParam("data") String data,
-			@QueryParam("tipo") Integer tipo, @QueryParam("medido") Integer medido) {
+	public Response leitura(@HeaderParam("Client-ID") String condominio, @PathParam("unidade") String unidade,
+			@QueryParam("data") String data, @QueryParam("tipo") Integer tipo, @QueryParam("medido") Integer medido) {
 		Leitura leitura = null;
 
 		try {
@@ -78,7 +79,7 @@ public class LeituraResource {
 						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
 			}
 
-			leitura = service.registraLeitura(unidade, dataLeitura, tipoMedicao, medido);
+			leitura = service.registraLeitura(condominio, unidade, dataLeitura, tipoMedicao, medido);
 
 			System.out
 					.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);

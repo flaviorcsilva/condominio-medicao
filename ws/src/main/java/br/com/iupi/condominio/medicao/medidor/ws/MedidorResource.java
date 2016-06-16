@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -25,8 +26,9 @@ public class MedidorResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<MedidorDTO> medidores(@PathParam("unidade") String unidade) {
-		List<Medidor> medidores = service.consultaMedidores(unidade);
+	public List<MedidorDTO> medidores(@HeaderParam("Client-ID") String condominio,
+			@PathParam("unidade") String unidade) {
+		List<Medidor> medidores = service.consultaMedidores(condominio, unidade);
 
 		List<MedidorDTO> lista = new ArrayList<MedidorDTO>();
 		for (Medidor medidor : medidores) {

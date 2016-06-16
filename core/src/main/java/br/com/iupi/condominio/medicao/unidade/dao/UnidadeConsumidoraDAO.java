@@ -27,7 +27,7 @@ public class UnidadeConsumidoraDAO extends AbstractGenericDAO<UnidadeConsumidora
 		return entityManager.find(UnidadeConsumidora.class, id);
 	}
 
-	public UnidadeConsumidora consultaPorUnidadeCondominio(String unidade, String condominio) {
+	public UnidadeConsumidora consultaPorUnidadeCondominio(String condominio, String unidade) {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" FROM " + UnidadeConsumidora.class.getName() + " as uc ");
 		sql.append("WHERE uc.unidade = :unidade ");

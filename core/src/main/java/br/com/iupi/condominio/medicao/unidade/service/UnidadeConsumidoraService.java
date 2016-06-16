@@ -14,8 +14,8 @@ public class UnidadeConsumidoraService {
 	@Inject
 	private UnidadeConsumidoraDAO dao;
 
-	public UnidadeConsumidora consultaUnidadeConsumidora(String unidade) {
-		UnidadeConsumidora uc = dao.consultaPorUnidadeCondominio(unidade, "privilege");
+	public UnidadeConsumidora consultaUnidadeConsumidora(String condominio, String unidade) {
+		UnidadeConsumidora uc = dao.consultaPorUnidadeCondominio(condominio, unidade);
 
 		if (uc == null) {
 			throw new NegocioException(Mensagem.UNIDADE_NAO_EXISTENTE);
