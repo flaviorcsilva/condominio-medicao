@@ -24,11 +24,12 @@ DROP TABLE IF EXISTS `medidor`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `medidor` (
   `nu_medidor` varchar(20) NOT NULL,
-  `tp_medidor` smallint(1) NOT NULL,
-  `id_unidade` int(11) NOT NULL,
+  `tp_medidor` int(1) NOT NULL,
+  `vl_fator_medidor` int(4) NOT NULL DEFAULT '1',
+  `id_unidade` bigint(11) NOT NULL,
   PRIMARY KEY (`nu_medidor`),
   KEY `IDX_FK_UNIDADE_ID_UNIDADE` (`id_unidade`),
-  CONSTRAINT `fk_unidade_id_unidade` FOREIGN KEY (`id_unidade`) REFERENCES `unidade` (`id_unidade`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `FK_UNIDADE` FOREIGN KEY (`id_unidade`) REFERENCES `unidade` (`id_unidade`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +39,7 @@ CREATE TABLE `medidor` (
 
 LOCK TABLES `medidor` WRITE;
 /*!40000 ALTER TABLE `medidor` DISABLE KEYS */;
-INSERT INTO `medidor` VALUES ('PAGF-211',1,1),('PAGF-212',1,2),('PAGF-GERAL',1,7),('PAGQ-211',2,1),('PAGQ-212',2,2),('PGAS-211',3,1),('PGAS-212',3,2),('PGAS-GERAL',3,7),('RAGF-212',1,5),('RAGF-GERAL',1,6),('RAGQ-212',2,5);
+INSERT INTO `medidor` VALUES ('PAGF-211',1,100,1),('PAGF-212',1,100,2),('PAGF-213',1,100,3),('PAGF-214',1,100,4),('PAGF-GERAL',1,1,7),('PAGQ-211',2,100,1),('PAGQ-212',2,100,2),('PAGQ-213',2,100,3),('PAGQ-214',2,100,4),('PGAS-211',3,1000,1),('PGAS-212',3,1000,2),('PGAS-213',3,1000,3),('PGAS-214',3,1000,4),('PGAS-GERAL',3,1,7),('RAGF-212',1,1,5),('RAGF-GERAL',1,1,6),('RAGQ-212',2,1,5);
 /*!40000 ALTER TABLE `medidor` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-08 21:43:13
+-- Dump completed on 2016-06-17 18:17:38

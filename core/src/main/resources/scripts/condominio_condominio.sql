@@ -16,32 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `unidade`
+-- Table structure for table `condominio`
 --
 
-DROP TABLE IF EXISTS `unidade`;
+DROP TABLE IF EXISTS `condominio`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `unidade` (
-  `id_unidade` bigint(11) NOT NULL AUTO_INCREMENT,
-  `cd_unidade` varchar(10) NOT NULL,
+CREATE TABLE `condominio` (
   `cd_condominio` varchar(20) NOT NULL,
-  `ds_unidade` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id_unidade`),
-  UNIQUE KEY `UK_UNIDADE_CONDOMINIO` (`cd_unidade`,`cd_condominio`),
-  KEY `FK_CONDOMINIO_idx` (`cd_condominio`),
-  CONSTRAINT `FK_CONDOMINIO` FOREIGN KEY (`cd_condominio`) REFERENCES `condominio` (`cd_condominio`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  `nm_condominio` varchar(45) NOT NULL,
+  `nu_medidor_agua` varchar(20) DEFAULT NULL,
+  `nu_medidor_gas` varchar(20) DEFAULT NULL,
+  `tk_condominio` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`cd_condominio`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `unidade`
+-- Dumping data for table `condominio`
 --
 
-LOCK TABLES `unidade` WRITE;
-/*!40000 ALTER TABLE `unidade` DISABLE KEYS */;
-INSERT INTO `unidade` VALUES (1,'211','privilege-noroeste','Apartamento 211'),(2,'212','privilege-noroeste','Apartamento 212'),(3,'213','privilege-noroeste','Apartamento 213'),(4,'214','privilege-noroeste','Apartamento 214'),(5,'212','ile-de-la-cite-resid','Apartamento 212'),(6,'geral','ile-de-la-cite-resid','Condomínio'),(7,'geral','privilege-noroeste','Condomínio'),(8,'211','ile-de-la-cite-resid','Apartamento 211');
-/*!40000 ALTER TABLE `unidade` ENABLE KEYS */;
+LOCK TABLES `condominio` WRITE;
+/*!40000 ALTER TABLE `condominio` DISABLE KEYS */;
+INSERT INTO `condominio` VALUES ('ile-de-la-cite-resid','Ile de la Cité Residencial',NULL,NULL,'ile-de-la-cite'),('privilege-noroeste','Privilege Noroeste','PAGF-GERAL','PGAS-GERAL','privilege');
+/*!40000 ALTER TABLE `condominio` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -53,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-17 18:17:38
+-- Dump completed on 2016-06-17 18:17:39
