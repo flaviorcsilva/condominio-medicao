@@ -1,5 +1,6 @@
 package br.com.iupi.condominio.medicao.unidade.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class UnidadeConsumidora extends Entidade {
 	private String descricao;
 
 	@OneToMany(mappedBy = "numero")
-	private List<Medidor> medidores;
+	private List<Medidor> medidores = new ArrayList<Medidor>();
 
 	public UnidadeConsumidora() {
 		//

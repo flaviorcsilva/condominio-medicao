@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.app;
+package br.com.iupi.condominio.medicao.comum.filter;
 
 import java.io.IOException;
 

@@ -32,16 +32,19 @@ public class ConsumoTest {
 		medidorAguaFria.setUnidadeConsumidora(unidadeConsumidora);
 		medidorAguaFria.setTipo(TipoMedicao.AGUA_FRIA);
 		medidorAguaFria.setNumero("A14E012523");
+		medidorAguaFria.setFator(1);
 
 		medidorAguaQuente = new Medidor();
 		medidorAguaQuente.setUnidadeConsumidora(unidadeConsumidora);
 		medidorAguaQuente.setTipo(TipoMedicao.AGUA_QUENTE);
 		medidorAguaQuente.setNumero("A13F011417");
+		medidorAguaQuente.setFator(1);
 
 		medidorGas = new Medidor();
 		medidorGas.setUnidadeConsumidora(unidadeConsumidora);
 		medidorGas.setTipo(TipoMedicao.GAS);
 		medidorGas.setNumero("B14D0001552D");
+		medidorGas.setFator(1);
 
 		unidadeConsumidora.addMedidor(medidorAguaFria);
 		unidadeConsumidora.addMedidor(medidorAguaQuente);
