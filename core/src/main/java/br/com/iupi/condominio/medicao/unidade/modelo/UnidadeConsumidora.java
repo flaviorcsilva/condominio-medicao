@@ -8,10 +8,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
+import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 
@@ -24,8 +27,9 @@ public class UnidadeConsumidora extends Entidade {
 	@Column(name = "id_unidade")
 	private Long id;
 
-	@Column(name = "cd_condominio")
-	private String condominio;
+	@ManyToOne
+	@JoinColumn(name = "cd_condominio")
+	private Condominio condominio;
 
 	@Column(name = "cd_unidade")
 	private String unidade;
@@ -36,17 +40,6 @@ public class UnidadeConsumidora extends Entidade {
 	@OneToMany(mappedBy = "numero")
 	private List<Medidor> medidores = new ArrayList<Medidor>();
 
-	public UnidadeConsumidora() {
-		//
-	}
-
-	public UnidadeConsumidora(String unidade, String descricao) {
-		super();
-		this.condominio = "Privilege Noroeste";
-		this.unidade = unidade;
-		this.descricao = descricao;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -55,11 +48,11 @@ public class UnidadeConsumidora extends Entidade {
 		this.id = id;
 	}
 
-	public String getCondominio() {
+	public Condominio getCondominio() {
 		return condominio;
 	}
 
-	public void setCondominio(String condominio) {
+	public void setCondominio(Condominio condominio) {
 		this.condominio = condominio;
 	}
 

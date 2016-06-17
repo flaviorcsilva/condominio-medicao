@@ -2,13 +2,13 @@ package br.com.iupi.condominio.medicao.consumo.modelo;
 
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 
-public class Consumo {
+public class ConsumoUnidade {
 
 	private Leitura leituraAnterior;
 	private Leitura leituraAtual;
 	private Double valorM3;
 
-	public Consumo(Leitura leituraAnterior, Leitura leituraAtual, Double valorM3) {
+	public ConsumoUnidade(Leitura leituraAnterior, Leitura leituraAtual, Double valorM3) {
 		this.leituraAnterior = leituraAnterior;
 		this.leituraAtual = leituraAtual;
 		this.valorM3 = valorM3;

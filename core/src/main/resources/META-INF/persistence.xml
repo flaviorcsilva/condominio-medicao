@@ -15,6 +15,7 @@
 		<class>br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora</class>
 		<class>br.com.iupi.condominio.medicao.medidor.modelo.Medidor</class>
 		<class>br.com.iupi.condominio.medicao.leitura.modelo.Leitura</class>
+		<class>br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -31,6 +32,9 @@
 			<!-- property default for all entities @Cacheable is hibernate.cache.infinispan.entity.expiration.expiration.lifespan -->
 			<property
 				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.condominio.modelo.Condominio.expiration.lifespan"
+				value="900000" />
+			<property
+				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio.expiration.lifespan"
 				value="900000" />
 
 		</properties>

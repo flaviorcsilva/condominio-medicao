@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
+import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
 
 @XmlRootElement
 @XmlType(propOrder = { "unidade", "tipo", "dataLeituraAnterior", "medicaoAnterior", "dataLeituraAtual", "medicaoAtual",
@@ -15,82 +15,82 @@ import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
 public class ConsumoDTO {
 
 	private static final String NI = "--";
-	private Consumo consumo;
+	private ConsumoUnidade consumoUnidade;
 
 	public ConsumoDTO() {
 	}
 
-	public ConsumoDTO(Consumo consumo) {
-		this.consumo = consumo;
+	public ConsumoDTO(ConsumoUnidade consumoUnidade) {
+		this.consumoUnidade = consumoUnidade;
 	}
 
 	public String getUnidade() {
-		if (consumo.getLeituraAtual() != null && consumo.getLeituraAtual().getMedidor() != null
-				&& consumo.getLeituraAtual().getMedidor().getUnidadeConsumidora() != null && StringUtils
-						.isNotBlank(consumo.getLeituraAtual().getMedidor().getUnidadeConsumidora().getUnidade())) {
-			return consumo.getLeituraAtual().getMedidor().getUnidadeConsumidora().getUnidade();
+		if (consumoUnidade.getLeituraAtual() != null && consumoUnidade.getLeituraAtual().getMedidor() != null
+				&& consumoUnidade.getLeituraAtual().getMedidor().getUnidadeConsumidora() != null && StringUtils
+						.isNotBlank(consumoUnidade.getLeituraAtual().getMedidor().getUnidadeConsumidora().getUnidade())) {
+			return consumoUnidade.getLeituraAtual().getMedidor().getUnidadeConsumidora().getUnidade();
 		}
 
 		return NI;
 	}
 
 	public String getTipo() {
-		if (consumo.getLeituraAtual() != null && consumo.getLeituraAtual().getMedidor() != null
-				&& consumo.getLeituraAtual().getMedidor().getTipo() != null) {
-			return consumo.getLeituraAtual().getMedidor().getTipo().getValor();
+		if (consumoUnidade.getLeituraAtual() != null && consumoUnidade.getLeituraAtual().getMedidor() != null
+				&& consumoUnidade.getLeituraAtual().getMedidor().getTipo() != null) {
+			return consumoUnidade.getLeituraAtual().getMedidor().getTipo().getValor();
 		}
 
 		return NI;
 	}
 
 	public String getDataLeituraAnterior() {
-		if (consumo.getLeituraAnterior() != null) {
-			return consumo.getLeituraAnterior().getDataLeituraFormatada();
+		if (consumoUnidade.getLeituraAnterior() != null) {
+			return consumoUnidade.getLeituraAnterior().getDataLeituraFormatada();
 		}
 
 		return NI;
 	}
 
 	public Integer getMedicaoAnterior() {
-		if (consumo.getLeituraAnterior() != null) {
-			return consumo.getLeituraAnterior().getMedido();
+		if (consumoUnidade.getLeituraAnterior() != null) {
+			return consumoUnidade.getLeituraAnterior().getMedido();
 		}
 
 		return 0;
 	}
 
 	public String getDataLeituraAtual() {
-		if (consumo.getLeituraAtual() != null) {
-			return consumo.getLeituraAtual().getDataLeituraFormatada();
+		if (consumoUnidade.getLeituraAtual() != null) {
+			return consumoUnidade.getLeituraAtual().getDataLeituraFormatada();
 		}
 
 		return NI;
 	}
 
 	public Integer getMedicaoAtual() {
-		if (consumo.getLeituraAtual() != null) {
-			return consumo.getLeituraAtual().getMedido();
+		if (consumoUnidade.getLeituraAtual() != null) {
+			return consumoUnidade.getLeituraAtual().getMedido();
 		}
 
 		return 0;
 	}
 
 	public Integer getConsumo() {
-		return consumo.getMedido();
+		return consumoUnidade.getMedido();
 
 	}
 
 	public Integer getFator() {
-		return consumo.getFator();
+		return consumoUnidade.getFator();
 	}
 
 	public Double getValorM3() {
-		return consumo.getValorM3();
+		return consumoUnidade.getValorM3();
 	}
 
 	public String getValor() {
 		DecimalFormat df = new DecimalFormat("###.##");
 
-		return df.format(consumo.getValor());
+		return df.format(consumoUnidade.getValor());
 	}
 }

@@ -15,7 +15,7 @@ public class Condominio extends Entidade {
 
 	@Id
 	@Column(name = "cd_condominio", nullable = false)
-	private String condominio;
+	private String codigo;
 
 	@Column(name = "nm_condominio", nullable = false)
 	private String nome;
@@ -29,12 +29,12 @@ public class Condominio extends Entidade {
 	@Column(name = "tk_condominio")
 	private String token;
 
-	public String getCondominio() {
-		return condominio;
+	public String getCodigo() {
+		return codigo;
 	}
 
-	public void setCondominio(String condominio) {
-		this.condominio = condominio;
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNome() {

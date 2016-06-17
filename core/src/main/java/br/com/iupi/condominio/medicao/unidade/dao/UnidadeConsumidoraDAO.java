@@ -31,7 +31,7 @@ public class UnidadeConsumidoraDAO extends AbstractGenericDAO<UnidadeConsumidora
 		StringBuilder sql = new StringBuilder();
 		sql.append(" FROM " + UnidadeConsumidora.class.getName() + " as uc ");
 		sql.append("WHERE uc.unidade = :unidade ");
-		sql.append("  AND uc.condominio = :condominio ");
+		sql.append("  AND uc.condominio.codigo = :condominio ");
 
 		Query query = getEntityManager().createQuery(sql.toString());
 		query.setParameter("unidade", unidade);

@@ -8,7 +8,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.iupi.condominio.medicao.consumo.modelo.Consumo;
+import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
+import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
@@ -24,8 +25,12 @@ public class ConsumoTest {
 
 	@BeforeClass
 	public static void setUp() {
+		Condominio condominio = new Condominio();
+		condominio.setCodigo("privilege-noroeste");
+		condominio.setNome("Privilege Noroeste");
+		
 		UnidadeConsumidora unidadeConsumidora = new UnidadeConsumidora();
-		unidadeConsumidora.setCondominio("Privilege Noroeste");
+		unidadeConsumidora.setCondominio(condominio);
 		unidadeConsumidora.setUnidade("212");
 
 		medidorAguaFria = new Medidor();
@@ -74,12 +79,12 @@ public class ConsumoTest {
 		assertEquals(leituraAnterior.getMedidor().getNumero(), leituraAtual.getMedidor().getNumero());
 
 		/* Calculo do consumo */
-		Consumo consumo = new Consumo(leituraAnterior, leituraAtual, precoM3Agua);
+		ConsumoUnidade consumoUnidade = new ConsumoUnidade(leituraAnterior, leituraAtual, precoM3Agua);
 
-		assertEquals(1266, consumo.getMedido(), 0);
-		assertEquals(8660.07, consumo.getValor(), 0.1);
+		assertEquals(1266, consumoUnidade.getMedido(), 0);
+		assertEquals(8660.07, consumoUnidade.getValor(), 0.1);
 
-		System.out.println("Total a Pagar: " + consumo.getValor() + " pelo consumo de " + consumo.getMedido()
+		System.out.println("Total a Pagar: " + consumoUnidade.getValor() + " pelo consumo de " + consumoUnidade.getMedido()
 				+ "m3 da unidade " + medidorAguaFria.getUnidadeConsumidora().getUnidade() + " do "
 				+ medidorAguaFria.getUnidadeConsumidora().getCondominio());
 	}
