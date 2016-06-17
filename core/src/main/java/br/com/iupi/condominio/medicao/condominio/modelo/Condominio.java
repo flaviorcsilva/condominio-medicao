@@ -1,5 +1,6 @@
 package br.com.iupi.condominio.medicao.condominio.modelo;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,6 +9,7 @@ import javax.persistence.Table;
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 
 @Entity
+@Cacheable
 @Table(name = "condominio")
 public class Condominio extends Entidade {
 

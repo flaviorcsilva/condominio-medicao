@@ -26,7 +26,7 @@ public class MedidorResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<MedidorDTO> medidores(@HeaderParam("Client-ID") String condominio,
+	public List<MedidorDTO> medidores(@HeaderParam("Condominio-ID") String condominio,
 			@PathParam("unidade") String unidade) {
 		List<Medidor> medidores = service.consultaMedidores(condominio, unidade);
 

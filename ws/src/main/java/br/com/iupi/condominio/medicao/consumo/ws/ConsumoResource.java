@@ -33,8 +33,8 @@ public class ConsumoResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ConsumoDTO> consumo(@HeaderParam("Client-ID") String condominio, @PathParam("unidade") String unidade,
-			@QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
+	public List<ConsumoDTO> consumo(@HeaderParam("Condominio-ID") String condominio,
+			@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
 		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
 				unidade);
 

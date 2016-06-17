@@ -11,10 +11,10 @@ import javax.crypto.SecretKey;
 
 public class CriptografiaAESHelper {
 
-	private static final String algorithm = "AES";
+	private static final String algoritmo = "AES";
 
-	public static SecretKey generateKey() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		KeyGenerator generator = KeyGenerator.getInstance(algorithm);
+	public static SecretKey geraSecretKey() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		KeyGenerator generator = KeyGenerator.getInstance(algoritmo);
 		generator.init(128);
 
 		SecretKey key = generator.generateKey();
@@ -22,23 +22,22 @@ public class CriptografiaAESHelper {
 		return key;
 	}
 
-	public static String encrypt(SecretKey key, String message) throws Exception {
-		Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(Cipher.ENCRYPT_MODE, key);
+	public static String criptografa(SecretKey secretKey, String mensagem) throws Exception {
+		Cipher cipher = Cipher.getInstance(algoritmo);
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
-		byte[] messageBytes = message.getBytes();
-		byte[] encrypted = cipher.doFinal(messageBytes);
+		byte[] criptografada = cipher.doFinal(mensagem.getBytes());
 
-		return Base64.getEncoder().encodeToString(encrypted);
+		return Base64.getEncoder().encodeToString(criptografada);
 	}
 
-	public static String decrypt(SecretKey key, String encryptedMessage) throws Exception {
-		Cipher cipher = Cipher.getInstance(algorithm);
-		cipher.init(Cipher.DECRYPT_MODE, key);
+	public static String descriptografa(SecretKey secretKey, String mensagemCriptografada) throws Exception {
+		Cipher cipher = Cipher.getInstance(algoritmo);
+		cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-		byte[] encryptedMessageBytes = Base64.getDecoder().decode(encryptedMessage);
-		byte[] decrypted = cipher.doFinal(encryptedMessageBytes);
+		byte[] mensagemCriptografadaBytes = Base64.getDecoder().decode(mensagemCriptografada);
+		byte[] descriptografada = cipher.doFinal(mensagemCriptografadaBytes);
 
-		return new String(decrypted, StandardCharsets.UTF_8);
+		return new String(descriptografada, StandardCharsets.UTF_8);
 	}
 }

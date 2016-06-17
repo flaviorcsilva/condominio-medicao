@@ -5,24 +5,35 @@
 	xsi:schemaLocation="
         http://xmlns.jcp.org/xml/ns/persistence
         http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-        
-	<persistence-unit name="condominio-pu" transaction-type="JTA">
+
+	<persistence-unit name="condominio-pu"
+		transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:/condominioDS</jta-data-source>
-		
+
 		<class>br.com.iupi.condominio.medicao.condominio.modelo.Condominio</class>
 		<class>br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora</class>
 		<class>br.com.iupi.condominio.medicao.medidor.modelo.Medidor</class>
 		<class>br.com.iupi.condominio.medicao.leitura.modelo.Leitura</class>
-		
+
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
-		
+
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
 		<properties>
 			<property name="hibernate.id.new_generator_mappings" value="false" />
 			<property name="hibernate.hbm2ddl.auto" value="validate" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.cache.use_query_cache" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.format_sql" value="true" />
+
+			<!-- infinispan cache config in miliseconds -->
+			<!-- property default for all entities @Cacheable is hibernate.cache.infinispan.entity.expiration.expiration.lifespan -->
+			<property
+				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.condominio.modelo.Condominio.expiration.lifespan"
+				value="900000" />
+
 		</properties>
 	</persistence-unit>
-	
+
 </persistence>

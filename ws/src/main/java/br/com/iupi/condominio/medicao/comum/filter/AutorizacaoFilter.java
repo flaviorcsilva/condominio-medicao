@@ -39,6 +39,6 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 
 		String[] login = token.split(":");
 
-		requestContext.getHeaders().add("Client-ID", login[1]);
+		requestContext.getHeaders().add("Condominio-ID", login[1]);
 	}
 }

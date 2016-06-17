@@ -46,8 +46,8 @@ public class LeituraResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<LeituraDTO> leituras(@HeaderParam("Client-ID") String condominio, @PathParam("unidade") String unidade,
-			@QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
+	public List<LeituraDTO> leituras(@HeaderParam("Condominio-ID") String condominio,
+			@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mes, ano);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mes, ano);
 
@@ -64,7 +64,7 @@ public class LeituraResource {
 	@POST
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response leitura(@HeaderParam("Client-ID") String condominio, @PathParam("unidade") String unidade,
+	public Response leitura(@HeaderParam("Condominio-ID") String condominio, @PathParam("unidade") String unidade,
 			@QueryParam("data") String data, @QueryParam("tipo") Integer tipo, @QueryParam("medido") Integer medido) {
 		Leitura leitura = null;
 
