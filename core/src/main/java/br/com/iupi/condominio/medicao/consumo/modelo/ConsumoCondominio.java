@@ -37,7 +37,7 @@ public class ConsumoCondominio extends Entidade {
 	private Double valorTotalFaturado;
 
 	@Column(name = "vl_medido_fatura")
-	private Double valorMedidoFatura;
+	private Integer valorMedidoFatura;
 
 	public Long getId() {
 		return id;
@@ -79,15 +79,19 @@ public class ConsumoCondominio extends Entidade {
 		this.valorTotalFaturado = valorTotalFaturado;
 	}
 
-	public Double getValorMedidoFatura() {
+	public Integer getValorMedidoFatura() {
 		return valorMedidoFatura;
 	}
 
-	public void setValorMedidoFatura(Double valorMedidoFatura) {
+	public void setValorMedidoFatura(Integer valorMedidoFatura) {
 		this.valorMedidoFatura = valorMedidoFatura;
 	}
 
 	public Double getValorM3() {
+		if (valorMedidoFatura == null || valorMedidoFatura == 0) {
+			return 0.0;
+		}
+
 		return valorTotalFaturado / valorMedidoFatura;
 	}
 }

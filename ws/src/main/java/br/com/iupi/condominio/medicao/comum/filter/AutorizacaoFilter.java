@@ -19,6 +19,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 @Provider
 public class AutorizacaoFilter implements ContainerRequestFilter {
+	
+	private Response unauthorized = Response.status(Status.UNAUTHORIZED).build();
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -30,7 +32,7 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 		String autorizacao = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
 		if (StringUtils.isEmpty(autorizacao) || autorizacao.startsWith("Basic ") == false) {
-			requestContext.abortWith(Response.status(Status.UNAUTHORIZED).build());
+			requestContext.abortWith(unauthorized);
 			return;
 		}
 

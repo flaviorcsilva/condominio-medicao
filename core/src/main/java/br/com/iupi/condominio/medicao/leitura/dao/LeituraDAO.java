@@ -39,7 +39,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 
 		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
 		sql.append("WHERE leitura.medidor.unidadeConsumidora = :unidadeConsumidora ");
-		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes");
+		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
 
 		Query query = entityManager.createQuery(sql.toString());
 
@@ -56,8 +56,8 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 
 		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
 		sql.append("WHERE leitura.medidor.unidadeConsumidora = :unidadeConsumidora ");
-		sql.append("  AND leitura.medidor.tipo = :tipo");
-		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes");
+		sql.append("  AND leitura.medidor.tipo = :tipo ");
+		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
 
 		Query query = entityManager.createQuery(sql.toString());
 

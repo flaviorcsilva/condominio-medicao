@@ -1,5 +1,7 @@
 package br.com.iupi.condominio.medicao.unidade.service;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
@@ -22,5 +24,15 @@ public class UnidadeConsumidoraService {
 		}
 
 		return uc;
+	}
+
+	public List<UnidadeConsumidora> consultaUnidadesConsumidorasPorCondominio(String condominio) {
+		List<UnidadeConsumidora> unidades = dao.consultaPorCondominio(condominio);
+
+		if (unidades.isEmpty()) {
+			throw new NegocioException(Mensagem.UNIDADE_NAO_EXISTE_UNIDADES);
+		}
+
+		return unidades;
 	}
 }

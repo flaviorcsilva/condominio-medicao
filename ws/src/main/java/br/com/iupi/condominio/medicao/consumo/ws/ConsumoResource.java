@@ -39,7 +39,8 @@ public class ConsumoResource {
 				unidade);
 
 		ConsumoUnidade consumoAguaFria = service.calculaConsumo(unidadeConsumidora, TipoMedicao.AGUA_FRIA, mes, ano);
-		ConsumoUnidade consumoAguaQuente = service.calculaConsumo(unidadeConsumidora, TipoMedicao.AGUA_QUENTE, mes, ano);
+		ConsumoUnidade consumoAguaQuente = service.calculaConsumo(unidadeConsumidora, TipoMedicao.AGUA_QUENTE, mes,
+				ano);
 		ConsumoUnidade consumoGas = service.calculaConsumo(unidadeConsumidora, TipoMedicao.GAS, mes, ano);
 
 		List<ConsumoDTO> consumos = new ArrayList<ConsumoDTO>();
@@ -48,5 +49,13 @@ public class ConsumoResource {
 		consumos.add(new ConsumoDTO(consumoGas));
 
 		return consumos;
+	}
+
+	@GET
+	@Path("/unidades")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<String> consumos(@HeaderParam("Condominio-ID") String condominio, @QueryParam("mes") Integer mes,
+			@QueryParam("ano") Integer ano) {
+		return service.geraArquivoConsumo(condominio, mes, ano);
 	}
 }

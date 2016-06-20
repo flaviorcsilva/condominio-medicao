@@ -71,13 +71,26 @@ public class LeituraService {
 		return leitura;
 	}
 
-	public List<Leitura> consultaLeituras(String condominio, String unidade, LocalDate inicioMes, LocalDate finalMes) {
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
-				unidade);
+	public List<Leitura> consultaLeituras(UnidadeConsumidora unidadeConsumidora, YearMonth mesAno) {
+		LocalDate inicioMes = DataHelper.getInicioDeMes(mesAno);
+		LocalDate finalMes = DataHelper.getFinalDeMes(mesAno);
 
-		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeCondominio, inicioMes, finalMes);
+		return this.consultaLeituras(unidadeConsumidora, inicioMes, finalMes);
+	}
+
+	public List<Leitura> consultaLeituras(UnidadeConsumidora unidadeConsumidora, LocalDate inicioMes,
+			LocalDate finalMes) {
+
+		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeConsumidora, inicioMes, finalMes);
 
 		return leituras;
+	}
+
+	public List<Leitura> consultaLeituras(String condominio, String unidade, LocalDate inicioMes, LocalDate finalMes) {
+		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
+				unidade);
+
+		return this.consultaLeituras(unidadeConsumidora, inicioMes, finalMes);
 	}
 
 	public Leitura consultaLeitura(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, YearMonth mesAno) {

@@ -3,6 +3,7 @@ package br.com.iupi.condominio.medicao.consumo.dao;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
@@ -29,6 +30,17 @@ public class ConsumoCondominioDAO extends AbstractGenericDAO<ConsumoCondominio> 
 
 	public ConsumoCondominio consultaPorCondominioTipoMedicaoMesAno(String condominio, TipoMedicao tipoMedicao,
 			String mesAno) {
-		return null;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" FROM " + ConsumoCondominio.class.getName() + " as cc ");
+		sql.append("WHERE cc.condominio = :condominio ");
+		sql.append("  AND cc.mesAno = :mesAno ");
+		sql.append("  AND cc.tipoMedicao = :tipoMedicao ");
+
+		Query query = getEntityManager().createQuery(sql.toString());
+		query.setParameter("condominio", condominio);
+		query.setParameter("mesAno", mesAno);
+		query.setParameter("tipoMedicao", tipoMedicao);
+
+		return getSingleResult(query);
 	}
 }

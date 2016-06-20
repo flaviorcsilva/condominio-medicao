@@ -28,8 +28,9 @@ public enum Mensagem {
 	CAMPOS_ID_OBRIGATORIO("campos.id_obrigatorio"), //
 	CAMPOS_OBRIGATORIOS_NAO_PREENCHIDOS("campos.obrigatorios_nao_preenchidos"), //
 	PARAMETRO_OBRIGATORIO("infra.parametro_obrigatorio"), //
+	ARQUIVO_ERRO_AO_ACESSAR("arquivo.erro_ao_acessar"), //
 	TESTE_CHAVE_INEXISTENTE("nao_existe_essa_chave"),
-	
+
 	/* Leitura */
 	LEITURA_UNIDADE_OBRIGATORIA("leitura.unidade_obrigatoria"), //
 	LEITURA_TIPO_INVALIDO("leitura.tipo_invalido"), //
@@ -37,13 +38,17 @@ public enum Mensagem {
 	LEITURA_VALOR_MEDIDO_OBRIGATORIO("leitura.valor_medido_obrigatorio"), //
 	LEITURA_DATA_JA_EXISTE_MEDICAO("leitura.data_ja_existe_medicao"), //
 	LEITURA_NAO_EXISTENTE("leitura.nao_existente"), //
-	
+
 	/* Condominio */
 	CONDOMINIO_NAO_EXISTENTE("condominio.nao_existente"), //
-		
+
+	/* Consumo Condomínio */
+	CONSUMO_NAO_EXISTENTE("consumo.nao_existente"), //
+
 	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
-	
+	UNIDADE_NAO_EXISTE_UNIDADES("unidade.nao_existe_unidades"), //
+
 	/* Medidor */
 	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente");
 
@@ -54,8 +59,7 @@ public enum Mensagem {
 	private String chave;
 
 	private Mensagem(String chave) {
-		this.resourceBundle = ResourceBundle
-				.getBundle("mensagens/mensagensDeErro");
+		this.resourceBundle = ResourceBundle.getBundle("mensagens/mensagensDeErro");
 		this.chave = chave;
 	}
 
