@@ -54,8 +54,15 @@ public class ConsumoResource {
 	@GET
 	@Path("/unidades")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<String> consumos(@HeaderParam("Condominio-ID") String condominio, @QueryParam("mes") Integer mes,
+	public List<ConsumoDTO> consumos(@HeaderParam("Condominio-ID") String condominio, @QueryParam("mes") Integer mes,
 			@QueryParam("ano") Integer ano) {
-		return service.geraArquivoConsumo(condominio, mes, ano);
+		List<ConsumoUnidade> consumosUnidade = service.calculaConsumos(condominio, mes, ano);
+
+		List<ConsumoDTO> consumos = new ArrayList<ConsumoDTO>();
+		for (ConsumoUnidade consumo : consumosUnidade) {
+			consumos.add(new ConsumoDTO(consumo));
+		}
+
+		return consumos;
 	}
 }

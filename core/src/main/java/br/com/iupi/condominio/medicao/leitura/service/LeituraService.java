@@ -54,7 +54,7 @@ public class LeituraService {
 		// obtém o medidor da unidade
 		Medidor medidor = medidorService.consultaMedidor(unidadeConsumidora, tipoMedicao);
 
-		Leitura leitura = new Leitura(medidor, dataLeitura, medido);
+		Leitura leitura = new Leitura(medidor, DataHelper.convertLocalDateToDate(dataLeitura), medido);
 
 		dao.insert(leitura);
 
@@ -81,7 +81,8 @@ public class LeituraService {
 	public List<Leitura> consultaLeituras(UnidadeConsumidora unidadeConsumidora, LocalDate inicioMes,
 			LocalDate finalMes) {
 
-		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeConsumidora, inicioMes, finalMes);
+		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeConsumidora,
+				DataHelper.convertLocalDateToDate(inicioMes), DataHelper.convertLocalDateToDate(finalMes));
 
 		return leituras;
 	}
@@ -97,7 +98,8 @@ public class LeituraService {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mesAno);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mesAno);
 
-		Leitura leitura = dao.consultaPorUnidadeTipoPeriodo(unidadeConsumidora, tipoMedicao, inicioMes, finalMes);
+		Leitura leitura = dao.consultaPorUnidadeTipoPeriodo(unidadeConsumidora, tipoMedicao,
+				DataHelper.convertLocalDateToDate(inicioMes), DataHelper.convertLocalDateToDate(finalMes));
 
 		if (leitura == null) {
 			// throw new

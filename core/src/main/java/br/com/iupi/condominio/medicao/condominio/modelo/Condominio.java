@@ -20,12 +20,6 @@ public class Condominio extends Entidade {
 	@Column(name = "nm_condominio", nullable = false)
 	private String nome;
 
-	@Column(name = "nu_medidor_agua")
-	private String numeroMedidorAgua;
-
-	@Column(name = "nu_medidor_gas")
-	private String numeroMedidorGas;
-
 	@Column(name = "tk_condominio")
 	private String token;
 
@@ -43,22 +37,6 @@ public class Condominio extends Entidade {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public String getNumeroMedidorAgua() {
-		return numeroMedidorAgua;
-	}
-
-	public void setNumeroMedidorAgua(String numeroMedidorAgua) {
-		this.numeroMedidorAgua = numeroMedidorAgua;
-	}
-
-	public String getNumeroMedidorGas() {
-		return numeroMedidorGas;
-	}
-
-	public void setNumeroMedidorGas(String numeroMedidorGas) {
-		this.numeroMedidorGas = numeroMedidorGas;
 	}
 
 	public String getToken() {

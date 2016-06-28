@@ -48,6 +48,7 @@ public enum Mensagem {
 	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
 	UNIDADE_NAO_EXISTE_UNIDADES("unidade.nao_existe_unidades"), //
+	UNIDADE_NAO_EXISTE_MEDIDORES("unidade.nao_existe_medidores"), //
 
 	/* Medidor */
 	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente");

@@ -1,5 +1,7 @@
 package br.com.iupi.condominio.medicao.medidor.dao;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,5 +44,19 @@ public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 		query.setParameter("tipoMedicao", tipoMedicao);
 
 		return getSingleResult(query);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Medidor> consultaPorUnidade(UnidadeConsumidora unidadeConsumidora) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" FROM " + Medidor.class.getName() + " as medidor ");
+		sql.append("WHERE medidor.unidadeConsumidora = :unidadeConsumidora ");
+
+		Query query = entityManager.createQuery(sql.toString());
+
+		query.setParameter("unidadeConsumidora", unidadeConsumidora);
+
+		return query.getResultList();
 	}
 }

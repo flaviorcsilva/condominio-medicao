@@ -37,9 +37,15 @@ public class MedidorService {
 	}
 
 	public List<Medidor> consultaMedidores(String condominio, String unidade) {
-		UnidadeConsumidora unidadeCondominio = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
+		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
 				unidade);
 
-		return unidadeCondominio.getMedidores();
+		List<Medidor> medidores = dao.consultaPorUnidade(unidadeConsumidora);
+
+		if (medidores.isEmpty()) {
+			throw new NegocioException(Mensagem.UNIDADE_NAO_EXISTE_MEDIDORES);
+		}
+
+		return medidores;
 	}
 }

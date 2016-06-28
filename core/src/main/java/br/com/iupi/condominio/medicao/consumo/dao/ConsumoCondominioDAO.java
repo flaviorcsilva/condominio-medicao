@@ -28,17 +28,19 @@ public class ConsumoCondominioDAO extends AbstractGenericDAO<ConsumoCondominio> 
 		return entityManager.find(ConsumoCondominio.class, id);
 	}
 
-	public ConsumoCondominio consultaPorCondominioTipoMedicaoMesAno(String condominio, TipoMedicao tipoMedicao,
-			String mesAno) {
+	public ConsumoCondominio consultaPorCondominioTipoMedicaoAnoMes(String condominio, TipoMedicao tipoMedicao,
+			String anoMes) {
 		StringBuilder sql = new StringBuilder();
+
 		sql.append(" FROM " + ConsumoCondominio.class.getName() + " as cc ");
 		sql.append("WHERE cc.condominio = :condominio ");
-		sql.append("  AND cc.mesAno = :mesAno ");
+		sql.append("  AND cc.anoMes = :anoMes ");
 		sql.append("  AND cc.tipoMedicao = :tipoMedicao ");
 
 		Query query = getEntityManager().createQuery(sql.toString());
+
 		query.setParameter("condominio", condominio);
-		query.setParameter("mesAno", mesAno);
+		query.setParameter("anoMes", anoMes);
 		query.setParameter("tipoMedicao", tipoMedicao);
 
 		return getSingleResult(query);

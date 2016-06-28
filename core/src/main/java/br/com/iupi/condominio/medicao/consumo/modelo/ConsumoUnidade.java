@@ -1,6 +1,8 @@
 package br.com.iupi.condominio.medicao.consumo.modelo;
 
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
+import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
+import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 public class ConsumoUnidade {
 
@@ -14,12 +16,24 @@ public class ConsumoUnidade {
 		this.valorM3 = valorM3;
 	}
 
+	public UnidadeConsumidora getUnidade() {
+		return leituraAtual.getMedidor().getUnidadeConsumidora();
+	}
+
 	public Leitura getLeituraAnterior() {
 		return leituraAnterior;
 	}
 
 	public Leitura getLeituraAtual() {
 		return leituraAtual;
+	}
+
+	public TipoMedicao getTipoMedicao() {
+		if (leituraAtual != null && leituraAtual.getMedidor() != null) {
+			return leituraAtual.getMedidor().getTipo();
+		} else {
+			return null;
+		}
 	}
 
 	public Double getValorM3() {

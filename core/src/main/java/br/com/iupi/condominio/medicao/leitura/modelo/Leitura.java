@@ -1,7 +1,7 @@
 package br.com.iupi.condominio.medicao.leitura.modelo;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
@@ -27,7 +29,8 @@ public class Leitura extends Entidade {
 	private Medidor medidor;
 
 	@Column(name = "dt_leitura", nullable = false)
-	private LocalDate dataLeitura;
+	@Temporal(TemporalType.DATE)
+	private Date dataLeitura;
 
 	@Column(name = "vl_medido")
 	private Integer medido;
@@ -35,7 +38,7 @@ public class Leitura extends Entidade {
 	public Leitura() {
 	}
 
-	public Leitura(Medidor medidor, LocalDate dataLeitura, Integer medido) {
+	public Leitura(Medidor medidor, Date dataLeitura, Integer medido) {
 		super();
 		this.medidor = medidor;
 		this.dataLeitura = dataLeitura;
@@ -58,17 +61,17 @@ public class Leitura extends Entidade {
 		this.medidor = medidor;
 	}
 
-	public LocalDate getDataLeitura() {
+	public Date getDataLeitura() {
 		return dataLeitura;
 	}
 
 	public String getDataLeituraFormatada() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-		return dataLeitura.format(formatter);
+		return formatter.format(dataLeitura);
 	}
 
-	public void setDataLeitura(LocalDate dataLeitura) {
+	public void setDataLeitura(Date dataLeitura) {
 		this.dataLeitura = dataLeitura;
 	}
 

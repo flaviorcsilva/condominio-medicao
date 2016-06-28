@@ -27,7 +27,7 @@ public class ConsumoCondominio extends Entidade {
 	private String condominio;
 
 	@Column(name = "dt_consumo", nullable = false)
-	private String mesAno;
+	private String anoMes;
 
 	@Column(name = "tp_medicao", nullable = false)
 	@Convert(converter = TipoMedicaoConverter.class)
@@ -55,12 +55,12 @@ public class ConsumoCondominio extends Entidade {
 		this.condominio = condominio;
 	}
 
-	public String getMesAno() {
-		return mesAno;
+	public String getAnoMes() {
+		return anoMes;
 	}
 
-	public void setMesAno(String mesAno) {
-		this.mesAno = mesAno;
+	public void setAnoMes(String anoMes) {
+		this.anoMes = anoMes;
 	}
 
 	public TipoMedicao getTipoMedicao() {

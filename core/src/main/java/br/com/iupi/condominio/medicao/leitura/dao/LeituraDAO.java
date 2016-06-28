@@ -1,6 +1,6 @@
 package br.com.iupi.condominio.medicao.leitura.dao;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -33,8 +33,8 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Leitura> consultaPorUnidadePeriodo(UnidadeConsumidora unidadeConsumidora, LocalDate inicioMes,
-			LocalDate finalMes) {
+	public List<Leitura> consultaPorUnidadePeriodo(UnidadeConsumidora unidadeConsumidora, Date inicioMes,
+			Date finalMes) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
@@ -51,7 +51,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 	}
 
 	public Leitura consultaPorUnidadeTipoPeriodo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao,
-			LocalDate inicioMes, LocalDate finalMes) {
+			Date inicioMes, Date finalMes) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");

@@ -1,9 +1,13 @@
 package br.com.iupi.condominio.medicao.comum.helper;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
 import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
@@ -37,6 +41,30 @@ public class DataHelper {
 		}
 
 		return mesAno;
+	}
+
+	public static Date convertLocalDateToDate(LocalDate localDate) {
+		Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+
+		return Date.from(instant);
+	}
+
+	public static Date convertLocalDateTimeToDate(LocalDateTime localDateTime) {
+		Instant instant = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
+
+		return Date.from(instant);
+	}
+
+	public static LocalDate convertDateToLocalDate(Date date) {
+		Instant instant = Instant.ofEpochMilli(date.getTime());
+
+		return LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+	}
+
+	public static LocalDateTime convertDateToLocalDateTime(Date date) {
+		Instant instant = Instant.ofEpochMilli(date.getTime());
+
+		return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 	}
 
 	public static LocalDate getInicioDeMes(Integer mes, Integer ano) {

@@ -8,6 +8,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
 import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
@@ -28,7 +29,7 @@ public class ConsumoTest {
 		Condominio condominio = new Condominio();
 		condominio.setCodigo("privilege-noroeste");
 		condominio.setNome("Privilege Noroeste");
-		
+
 		UnidadeConsumidora unidadeConsumidora = new UnidadeConsumidora();
 		unidadeConsumidora.setCondominio(condominio);
 		unidadeConsumidora.setUnidade("212");
@@ -50,10 +51,6 @@ public class ConsumoTest {
 		medidorGas.setTipo(TipoMedicao.GAS);
 		medidorGas.setNumero("B14D0001552D");
 		medidorGas.setFator(1);
-
-		unidadeConsumidora.addMedidor(medidorAguaFria);
-		unidadeConsumidora.addMedidor(medidorAguaQuente);
-		unidadeConsumidora.addMedidor(medidorGas);
 	}
 
 	@AfterClass
@@ -68,12 +65,12 @@ public class ConsumoTest {
 
 		Leitura leituraAnterior = new Leitura();
 		leituraAnterior.setMedidor(medidorAguaFria);
-		leituraAnterior.setDataLeitura(mesAnterior);
+		leituraAnterior.setDataLeitura(DataHelper.convertLocalDateToDate(mesAnterior));
 		leituraAnterior.setMedido(12406);
 
 		Leitura leituraAtual = new Leitura();
 		leituraAtual.setMedidor(medidorAguaFria);
-		leituraAtual.setDataLeitura(mesAtual);
+		leituraAtual.setDataLeitura(DataHelper.convertLocalDateToDate(mesAtual));
 		leituraAtual.setMedido(13672);
 
 		assertEquals(leituraAnterior.getMedidor().getNumero(), leituraAtual.getMedidor().getNumero());
@@ -84,9 +81,9 @@ public class ConsumoTest {
 		assertEquals(1266, consumoUnidade.getMedido(), 0);
 		assertEquals(8660.07, consumoUnidade.getValor(), 0.1);
 
-		System.out.println("Total a Pagar: " + consumoUnidade.getValor() + " pelo consumo de " + consumoUnidade.getMedido()
-				+ "m3 da unidade " + medidorAguaFria.getUnidadeConsumidora().getUnidade() + " do "
-				+ medidorAguaFria.getUnidadeConsumidora().getCondominio());
+		System.out.println("Total a Pagar: " + consumoUnidade.getValor() + " pelo consumo de "
+				+ consumoUnidade.getMedido() + "m3 da unidade " + medidorAguaFria.getUnidadeConsumidora().getUnidade()
+				+ " do " + medidorAguaFria.getUnidadeConsumidora().getCondominio());
 	}
 
 }

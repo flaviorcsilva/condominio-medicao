@@ -1,12 +1,12 @@
 package br.com.iupi.condominio.medicao.consumo.service;
 
-import java.text.DecimalFormat;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -18,7 +18,6 @@ import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
 import br.com.iupi.condominio.medicao.condominio.service.CondominioService;
 import br.com.iupi.condominio.medicao.consumo.arquivo.GeradorArquivoConsumo;
 import br.com.iupi.condominio.medicao.consumo.dao.ConsumoCondominioDAO;
-import br.com.iupi.condominio.medicao.consumo.dto.ConsumoDTO;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
 import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
@@ -45,10 +44,6 @@ public class ConsumoService {
 	@Inject
 	private GeradorArquivoConsumo geradorArquivoConsumo;
 
-	private final DecimalFormat df = new DecimalFormat("###.##");
-	private final String cabecalhoUnidade = "Unidade; Tipo Medicao;Data Leitura Anterior;Medicao Anterior;Data Leitura Atual;Medicao Atual;Consumo;Fator;Valor (m3);Valor A Pagar";
-	private final String linhaEmBranco = ";;;;;;;;;";
-
 	public ConsumoUnidade calculaConsumo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, Integer mes,
 			Integer ano) {
 		ConsumoCondominio consumoCondominio = this
@@ -69,29 +64,22 @@ public class ConsumoService {
 		return new ConsumoUnidade(leituraAnterior, leituraAtual, consumoCondominio.getValorM3());
 	}
 
-	public List<String> geraArquivoConsumo(String condominio, Integer mes, Integer ano) {
-		List<String> consumos = new ArrayList<String>();
+	public List<ConsumoUnidade> calculaConsumos(String codigoCondominio, Integer mes, Integer ano) {
+		Map<UnidadeConsumidora, List<ConsumoUnidade>> consumosUnidade = new TreeMap<>();
+		List<ConsumoUnidade> consumos = null;
 
 		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
 		YearMonth mesAnterior = mesAtual.minusMonths(1);
 
 		/* Cache com o valores do M3 para Água e Gás */
-		Map<TipoMedicao, Double> valorM3 = criaMapaValorM3(condominio, mes, ano);
-
-		/* Totalizador do Valor de Rateio */
-		Double totalValorRateado = 0.0;
+		Map<TipoMedicao, Double> valorM3 = criaMapaValorM3(codigoCondominio, mes, ano);
 
 		/* Obtém todas as unidades consumidoras do condomínio */
 		List<UnidadeConsumidora> unidades = unidadeConsumidoraService
-				.consultaUnidadesConsumidorasPorCondominio(condominio);
+				.consultaUnidadesConsumidorasPorCondominio(codigoCondominio);
 		for (UnidadeConsumidora unidadeConsumidora : unidades) {
 
-			/* Adiciona o cabeçalho de coluna */
-			consumos.add(cabecalhoUnidade);
-
-			/* Totalizador do Consumo da Unidade */
-			Double totalAPagarUnidade = 0.0;
-
+			consumos = new ArrayList<ConsumoUnidade>();
 			/* Obtém as leituras atuais da unidade */
 			List<Leitura> leiturasAtuais = leituraService.consultaLeituras(unidadeConsumidora, mesAtual);
 			for (Leitura leituraAtual : leiturasAtuais) {
@@ -102,36 +90,28 @@ public class ConsumoService {
 
 				Double precoM3 = valorM3.get(leituraAtual.getMedidor().getTipo());
 
-				ConsumoUnidade consumoUnidade = new ConsumoUnidade(leituraAnterior, leituraAtual, precoM3);
-				totalAPagarUnidade = totalAPagarUnidade + consumoUnidade.getValor();
-				totalValorRateado = totalValorRateado + consumoUnidade.getValor();
-
-				consumos.add(new ConsumoDTO(consumoUnidade).toString());
+				consumos.add(new ConsumoUnidade(leituraAnterior, leituraAtual, precoM3));
 			}
 
-			/* Adiciona o rodápe de totalização da unidade */
-			String rodapeTotalUnidade = "TOTAL;;;;;;;;;" + df.format(totalAPagarUnidade);
-			consumos.add(rodapeTotalUnidade);
-			consumos.add(linhaEmBranco);
+			consumosUnidade.put(unidadeConsumidora, consumos);
 		}
 
-		/* Gerando o total do valor rateado pelas unidades */
-		String rodapeTotalRateado = "TOTAL;;;;;;;;;" + df.format(totalValorRateado);
-		consumos.add(rodapeTotalRateado);
+		Condominio condominio = condominioService.consultaCondominioPorCodigo(codigoCondominio);
+		ConsumoCondominio consumoCondominio = consultaConsumoCondominio(codigoCondominio, TipoMedicao.AGUA_FRIA, mes,
+				ano);
 
-		Condominio c = condominioService.consultaCondominioPorCodigo(condominio);
-		geradorArquivoConsumo.geraArquivo(c, consumos, mes, ano);
+		geradorArquivoConsumo.geraArquivo(consumosUnidade, condominio, consumoCondominio, mes, ano);
 
 		return consumos;
 	}
 
-	private ConsumoCondominio consultaConsumoCondominio(String condominio, TipoMedicao tipoMedicao, Integer mes,
+	private ConsumoCondominio consultaConsumoCondominio(String codigoCondominio, TipoMedicao tipoMedicao, Integer mes,
 			Integer ano) {
 		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
 
 		/* Formata o mes/ano para pesquisa */
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-		String mesAno = mesAtual.format(formatter);
+		String anoMes = mesAtual.format(formatter);
 
 		/*
 		 * Caso a medição seja do tipo Água Quente, deve obter o consumo
@@ -144,7 +124,8 @@ public class ConsumoService {
 			tipo = tipoMedicao;
 		}
 
-		ConsumoCondominio consumoCondominio = dao.consultaPorCondominioTipoMedicaoMesAno(condominio, tipo, mesAno);
+		ConsumoCondominio consumoCondominio = dao.consultaPorCondominioTipoMedicaoAnoMes(codigoCondominio, tipo,
+				anoMes);
 
 		if (consumoCondominio == null || consumoCondominio.getValorM3() == null
 				|| consumoCondominio.getValorM3() == 0.0) {
@@ -154,12 +135,12 @@ public class ConsumoService {
 		return consumoCondominio;
 	}
 
-	private Map<TipoMedicao, Double> criaMapaValorM3(String condominio, Integer mes, Integer ano) {
+	private Map<TipoMedicao, Double> criaMapaValorM3(String codigoCondominio, Integer mes, Integer ano) {
 		Map<TipoMedicao, Double> map = new HashMap<>();
 
-		ConsumoCondominio consumoGeralAgua = this.consultaConsumoCondominio(condominio, TipoMedicao.AGUA_FRIA, mes,
-				ano);
-		ConsumoCondominio consumoGeralGas = this.consultaConsumoCondominio(condominio, TipoMedicao.GAS, mes, ano);
+		ConsumoCondominio consumoGeralAgua = this.consultaConsumoCondominio(codigoCondominio, TipoMedicao.AGUA_FRIA,
+				mes, ano);
+		ConsumoCondominio consumoGeralGas = this.consultaConsumoCondominio(codigoCondominio, TipoMedicao.GAS, mes, ano);
 
 		map.put(TipoMedicao.AGUA_FRIA, consumoGeralAgua.getValorM3());
 		map.put(TipoMedicao.AGUA_QUENTE, consumoGeralAgua.getValorM3());
