@@ -24,6 +24,7 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
+		/*
 		if (requestContext.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS)) {
 			requestContext.abortWith(Response.ok().build());
 			return;
@@ -42,5 +43,6 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 		String[] login = token.split(":");
 
 		requestContext.getHeaders().add("Condominio-ID", login[1]);
+		*/
 	}
 }

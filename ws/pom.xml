@@ -35,7 +35,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
+		<finalName>condominio</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>

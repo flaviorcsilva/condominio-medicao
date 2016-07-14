@@ -12,6 +12,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import br.com.iupi.condominio.medicao.consumo.dto.ConsumoDTO;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
@@ -33,8 +34,8 @@ public class ConsumoResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ConsumoDTO> consumo(@HeaderParam("Condominio-ID") String condominio,
-			@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
+	public Response consumo(@HeaderParam("Condominio-ID") String condominio, @PathParam("unidade") String unidade,
+			@QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
 		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
 				unidade);
 
@@ -48,7 +49,7 @@ public class ConsumoResource {
 		consumos.add(new ConsumoDTO(consumoAguaQuente));
 		consumos.add(new ConsumoDTO(consumoGas));
 
-		return consumos;
+		return Response.ok().entity(consumos).build();
 	}
 
 	@GET
@@ -64,5 +65,12 @@ public class ConsumoResource {
 		}
 
 		return consumos;
+	}
+	
+	@GET
+	@Path("/hello")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response hello() {
+		return Response.ok("Hello World").build();
 	}
 }
