@@ -11,6 +11,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import br.com.iupi.condominio.medicao.medidor.dto.MedidorDTO;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
@@ -26,8 +27,7 @@ public class MedidorResource {
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<MedidorDTO> medidores(@HeaderParam("Condominio-ID") String condominio,
-			@PathParam("unidade") String unidade) {
+	public Response medidores(@HeaderParam("Condominio-ID") String condominio, @PathParam("unidade") String unidade) {
 		List<Medidor> medidores = service.consultaMedidores(condominio, unidade);
 
 		List<MedidorDTO> lista = new ArrayList<MedidorDTO>();
@@ -35,6 +35,6 @@ public class MedidorResource {
 			lista.add(new MedidorDTO(medidor));
 		}
 
-		return lista;
+		return Response.ok().entity(lista).build();
 	}
 }

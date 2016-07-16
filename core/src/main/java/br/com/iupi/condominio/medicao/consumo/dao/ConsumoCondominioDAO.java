@@ -1,6 +1,5 @@
 package br.com.iupi.condominio.medicao.consumo.dao;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -9,7 +8,6 @@ import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 
-@Stateless
 public class ConsumoCondominioDAO extends AbstractGenericDAO<ConsumoCondominio> {
 
 	@PersistenceContext(unitName = "condominio-pu")

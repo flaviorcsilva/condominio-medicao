@@ -37,17 +37,19 @@ public class LeituraResource {
 	@GET
 	@Path("/{unidade}/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public LeituraDTO leitura(@PathParam("unidade") String unidade, @PathParam("id") Long id) {
+	public Response leitura(@PathParam("unidade") String unidade, @PathParam("id") Long id) {
 		Leitura leitura = service.consultaLeitura(id);
 
-		return new LeituraDTO(leitura);
+		LeituraDTO dto = new LeituraDTO(leitura);
+
+		return Response.ok(dto).build();
 	}
 
 	@GET
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<LeituraDTO> leituras(@HeaderParam("Condominio-ID") String condominio,
-			@PathParam("unidade") String unidade, @QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
+	public Response leituras(@HeaderParam("Condominio-ID") String condominio, @PathParam("unidade") String unidade,
+			@QueryParam("mes") Integer mes, @QueryParam("ano") Integer ano) {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mes, ano);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mes, ano);
 
@@ -58,7 +60,7 @@ public class LeituraResource {
 			lista.add(new LeituraDTO(leitura));
 		}
 
-		return lista;
+		return Response.ok().entity(lista).build();
 	}
 
 	@POST

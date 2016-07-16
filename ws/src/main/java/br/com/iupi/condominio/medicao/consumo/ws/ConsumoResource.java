@@ -55,7 +55,7 @@ public class ConsumoResource {
 	@GET
 	@Path("/unidades")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<ConsumoDTO> consumos(@HeaderParam("Condominio-ID") String condominio, @QueryParam("mes") Integer mes,
+	public Response consumos(@HeaderParam("Condominio-ID") String condominio, @QueryParam("mes") Integer mes,
 			@QueryParam("ano") Integer ano) {
 		List<ConsumoUnidade> consumosUnidade = service.calculaConsumos(condominio, mes, ano);
 
@@ -64,13 +64,6 @@ public class ConsumoResource {
 			consumos.add(new ConsumoDTO(consumo));
 		}
 
-		return consumos;
-	}
-	
-	@GET
-	@Path("/hello")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response hello() {
-		return Response.ok("Hello World").build();
+		return Response.ok().entity(consumos).build();
 	}
 }

@@ -2,7 +2,6 @@ package br.com.iupi.condominio.medicao.medidor.dao;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -12,7 +11,6 @@ import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
-@Stateless
 public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 
 	@PersistenceContext(unitName = "condominio-pu")

@@ -3,7 +3,6 @@ package br.com.iupi.condominio.medicao.leitura.dao;
 import java.util.Date;
 import java.util.List;
 
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -13,7 +12,6 @@ import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
 import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
-@Stateless
 public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 
 	@PersistenceContext(unitName = "condominio-pu")

@@ -51,7 +51,12 @@ public enum Mensagem {
 	UNIDADE_NAO_EXISTE_MEDIDORES("unidade.nao_existe_medidores"), //
 
 	/* Medidor */
-	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente");
+	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente"),
+	
+	/* Usuário */
+	USUARIO_LOGIN_SENHA_INVALIDOS("usuario.login_senha_invalidos"),
+	USUARIO_SUSPENSO("usuario.supenso"),
+	USUARIO_NAO_PODE_ACESSAR_APLICACAO("usuario.bloqueado_suspenso");
 
 	private static final String NAO_EXISTE_CHAVE = "Acrescente a chave '%s' no arquivo src/main/resources/mensagens/"
 			+ "mensagensDeErro.properties";

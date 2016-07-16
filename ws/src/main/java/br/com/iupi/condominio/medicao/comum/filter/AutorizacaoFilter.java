@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import javax.naming.InitialContext;
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
@@ -14,17 +15,18 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.iupi.condominio.medicao.usuario.service.UsuarioService;
+
 /**
  * Filters to be applied to Requests WebServices (REST).
  */
 @Provider
 public class AutorizacaoFilter implements ContainerRequestFilter {
-	
+
 	private Response unauthorized = Response.status(Status.UNAUTHORIZED).build();
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
-		/*
 		if (requestContext.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS)) {
 			requestContext.abortWith(Response.ok().build());
 			return;
@@ -40,9 +42,25 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 		String token = new String(Base64.getDecoder().decode(autorizacao.substring("Basic ".length())),
 				StandardCharsets.UTF_8);
 
-		String[] login = token.split(":");
+		String[] usuario = token.split(":");
+		String login = usuario[0];
+		String senha = usuario[1];
 
-		requestContext.getHeaders().add("Condominio-ID", login[1]);
-		*/
+		String condominio = null;
+		UsuarioService service = null;
+		InitialContext context;
+
+		try {
+			context = new InitialContext();
+			service = (UsuarioService) context.lookup(
+					"java:global/medicao-ear/medicao-core/UsuarioService!br.com.iupi.condominio.medicao.usuario.service.UsuarioService");
+			condominio = service.autentica(login, senha);
+		} catch (Exception e) {
+			e.printStackTrace();
+			requestContext.abortWith(unauthorized);
+			return;
+		}
+
+		requestContext.getHeaders().add("Condominio-ID", condominio);
 	}
 }

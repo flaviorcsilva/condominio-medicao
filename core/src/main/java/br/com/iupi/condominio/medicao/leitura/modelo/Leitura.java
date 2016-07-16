@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -17,6 +18,7 @@ import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
 
 @Entity
+@Table(name = "leitura")
 public class Leitura extends Entidade {
 
 	@Id

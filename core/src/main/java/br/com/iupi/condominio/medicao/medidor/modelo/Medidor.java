@@ -6,12 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.com.iupi.condominio.medicao.comum.converter.TipoMedicaoConverter;
 import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
 import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
 
 @Entity
+@Table(name = "medidor")
 public class Medidor extends Entidade {
 
 	@Id
