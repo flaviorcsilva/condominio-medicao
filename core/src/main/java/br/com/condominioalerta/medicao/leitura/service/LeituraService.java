@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.leitura.service;
+package br.com.condominioalerta.medicao.leitura.service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -7,17 +7,17 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
-import br.com.iupi.condominio.medicao.comum.validacao.Assert;
-import br.com.iupi.condominio.medicao.leitura.dao.LeituraDAO;
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.medidor.service.MedidorService;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
-import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.comum.helper.DataHelper;
+import br.com.condominioalerta.medicao.comum.validacao.Assert;
+import br.com.condominioalerta.medicao.leitura.dao.LeituraDAO;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.medidor.service.MedidorService;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.unidade.service.UnidadeConsumidoraService;
 
 @Stateless
 public class LeituraService {
@@ -32,12 +32,8 @@ public class LeituraService {
 	private MedidorService medidorService;
 
 	public Leitura registraLeitura(String condominio, String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao,
-			Integer medido) {
-		/* Validação de campos obrigatórios. */
-		Assert.notBlank(unidade, Mensagem.LEITURA_UNIDADE_OBRIGATORIA);
-		Assert.notNull(dataLeitura, Mensagem.LEITURA_DATA_OBRIGATORIA);
-		Assert.notNull(tipoMedicao, Mensagem.LEITURA_TIPO_INVALIDO);
-		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
+			Integer medido, byte[] foto) {
+		validaAntesDeInserir(unidade, dataLeitura, tipoMedicao, medido);
 
 		// verifica se a undiade existe nesse condomínio
 		UnidadeConsumidora unidadeConsumidora = unidadeConsumidoraService.consultaUnidadeConsumidora(condominio,
@@ -54,11 +50,29 @@ public class LeituraService {
 		// obtém o medidor da unidade
 		Medidor medidor = medidorService.consultaMedidor(unidadeConsumidora, tipoMedicao);
 
-		Leitura leitura = new Leitura(medidor, DataHelper.convertLocalDateToDate(dataLeitura), medido);
+		Leitura leitura = new Leitura(medidor, DataHelper.converteLocalDateToDate(dataLeitura), medido, foto);
 
 		dao.insert(leitura);
 
 		return leitura;
+	}
+
+	public void atualizaLeitura(Leitura leitura) {
+		validaAntesDeAtualizar(leitura.getMedido());
+
+		dao.update(leitura);
+	}
+
+	private void validaAntesDeInserir(String unidade, LocalDate dataLeitura, TipoMedicao tipoMedicao, Integer medido) {
+		/* Validação de campos obrigatórios. */
+		Assert.notBlank(unidade, Mensagem.LEITURA_UNIDADE_OBRIGATORIA);
+		Assert.notNull(dataLeitura, Mensagem.LEITURA_DATA_OBRIGATORIA);
+		Assert.notNull(tipoMedicao, Mensagem.LEITURA_TIPO_INVALIDO);
+		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
+	}
+
+	private void validaAntesDeAtualizar(Integer medido) {
+		Assert.notNull(medido, Mensagem.LEITURA_VALOR_MEDIDO_OBRIGATORIO);
 	}
 
 	public Leitura consultaLeitura(Long id) {
@@ -82,7 +96,7 @@ public class LeituraService {
 			LocalDate finalMes) {
 
 		List<Leitura> leituras = dao.consultaPorUnidadePeriodo(unidadeConsumidora,
-				DataHelper.convertLocalDateToDate(inicioMes), DataHelper.convertLocalDateToDate(finalMes));
+				DataHelper.converteLocalDateToDate(inicioMes), DataHelper.converteLocalDateToDate(finalMes));
 
 		return leituras;
 	}
@@ -94,12 +108,19 @@ public class LeituraService {
 		return this.consultaLeituras(unidadeConsumidora, inicioMes, finalMes);
 	}
 
+	public List<Leitura> consultaLeituras(String condominio, LocalDate inicioMes, LocalDate finalMes) {
+		List<Leitura> leituras = dao.consultaPorPeriodo(DataHelper.converteLocalDateToDate(inicioMes),
+				DataHelper.converteLocalDateToDate(finalMes));
+
+		return leituras;
+	}
+
 	public Leitura consultaLeitura(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, YearMonth mesAno) {
 		LocalDate inicioMes = DataHelper.getInicioDeMes(mesAno);
 		LocalDate finalMes = DataHelper.getFinalDeMes(mesAno);
 
 		Leitura leitura = dao.consultaPorUnidadeTipoPeriodo(unidadeConsumidora, tipoMedicao,
-				DataHelper.convertLocalDateToDate(inicioMes), DataHelper.convertLocalDateToDate(finalMes));
+				DataHelper.converteLocalDateToDate(inicioMes), DataHelper.converteLocalDateToDate(finalMes));
 
 		if (leitura == null) {
 			// throw new

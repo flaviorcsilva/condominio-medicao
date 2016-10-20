@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.helper;
+package br.com.condominioalerta.medicao.comum.helper;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;

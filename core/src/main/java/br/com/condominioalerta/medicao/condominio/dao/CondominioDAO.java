@@ -1,10 +1,10 @@
-package br.com.iupi.condominio.medicao.condominio.dao;
+package br.com.condominioalerta.medicao.condominio.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
 
 public class CondominioDAO extends AbstractGenericDAO<Condominio> {
 

@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.validacao;
+package br.com.condominioalerta.medicao.comum.validacao;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
 
 /**
  * Classe utilitária para auxiliar validação de parâmetros, baseado no conceito
@@ -110,6 +110,12 @@ public class Assert {
 		}
 	}
 
+	public static void notBlank(String objeto, Mensagem mensagem, String parametroMensagem) {
+		if (StringUtils.isBlank(objeto)) {
+			throw new NegocioException(mensagem, parametroMensagem);
+		}
+	}
+
 	/**
 	 * Verifica se a data passada como pametro é maior ou igual a data de hoje.
 	 * 
@@ -122,11 +128,8 @@ public class Assert {
 	 */
 	public static void dateAfter(Date dataParaValidacao, Mensagem mensagem) {
 
-		Integer dataAtual = Integer.parseInt(new SimpleDateFormat("yyyyMMdd")
-				.format(new Date()));
-		Integer dataAvaliada = Integer
-				.parseInt(new SimpleDateFormat("yyyyMMdd")
-						.format(dataParaValidacao));
+		Integer dataAtual = Integer.parseInt(new SimpleDateFormat("yyyyMMdd").format(new Date()));
+		Integer dataAvaliada = Integer.parseInt(new SimpleDateFormat("yyyyMMdd").format(dataParaValidacao));
 
 		if (dataAtual > dataAvaliada) {
 			throw new NegocioException(mensagem);

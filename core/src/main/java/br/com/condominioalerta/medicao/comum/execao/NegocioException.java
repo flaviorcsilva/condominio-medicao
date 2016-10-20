@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.execao;
+package br.com.condominioalerta.medicao.comum.execao;
 
 /**
  * Exceção de negócio do sistema.
@@ -6,7 +6,7 @@ package br.com.iupi.condominio.medicao.comum.execao;
 public class NegocioException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private Mensagem mensagem;
 
 	/**

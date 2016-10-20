@@ -1,16 +1,19 @@
-package br.com.iupi.condominio.medicao.medidor.modelo;
+package br.com.condominioalerta.medicao.medidor.model;
 
 public enum TipoMedicao {
 
-	AGUA_FRIA(1, "Agua Fria"), AGUA_QUENTE(2, "Agua Quente"), GAS(3, "Gas");
+	AGUA_FRIA(1, "Agua Fria", "agua.fria"), AGUA_QUENTE(2, "Agua Quente", "agua.quente"), GAS(3, "Gas", "gas");
 
 	private Integer chave;
 
 	private String valor;
 
-	private TipoMedicao(Integer chave, String valor) {
+	private String binding;
+
+	private TipoMedicao(Integer chave, String valor, String binding) {
 		this.chave = chave;
-		this.setValor(valor);
+		this.valor = valor;
+		this.binding = binding;
 	}
 
 	public static TipoMedicao get(Integer chave) {
@@ -40,5 +43,9 @@ public enum TipoMedicao {
 
 	public void setValor(String valor) {
 		this.valor = valor;
+	}
+
+	public String getBinding() {
+		return binding;
 	}
 }

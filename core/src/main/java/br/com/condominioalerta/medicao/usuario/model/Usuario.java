@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.usuario.model;
+package br.com.condominioalerta.medicao.usuario.model;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -8,7 +8,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
+import br.com.condominioalerta.medicao.comum.persistencia.Entidade;
 
 @Entity
 @Cacheable

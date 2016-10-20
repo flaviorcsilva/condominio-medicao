@@ -1,8 +1,8 @@
-package br.com.iupi.condominio.medicao.consumo.arquivo;
+package br.com.condominioalerta.medicao.consumo.service;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -10,28 +10,30 @@ import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 
-import br.com.iupi.condominio.medicao.comum.helper.ArquivoHelper;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
-import br.com.iupi.condominio.medicao.consumo.dto.ConsumoDTO;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.comum.helper.ArquivoHelper;
+import br.com.condominioalerta.medicao.comum.helper.NumeroHelper;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
+import br.com.condominioalerta.medicao.consumo.dto.ConsumoDTO;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoCondominio;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoUnidade;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 @Stateless
-public class GeradorArquivoConsumo {
+public class ArquivoConsumoService {
 
-	private final Logger LOGGER = Logger.getLogger(GeradorArquivoConsumo.class.getName());
-	private final String cabecalhoUnidade = "Unidade;Tipo Medicao;Leitura Anterior;Medicao Anterior;Leitura Atual;Medicao Atual;Consumo;Fator;Valor (m3);Valor A Pagar\n";
-	private final String linhaEmBranco = "\n";
-	private final DecimalFormat df = new DecimalFormat("##0.00");
+	private final Logger LOGGER = Logger.getLogger(ArquivoConsumoService.class.getName());
+	private final String CABECALHO_UNIDADE = "Unidade;Tipo Medicao;Leitura Anterior;Medicao Anterior;Leitura Atual;Medicao Atual;Consumo;Fator;Valor (m3);Valor A Pagar\n";
+	private final String LINHA_EM_BRANCO = "\n";
 
-	public void geraArquivo(Map<UnidadeConsumidora, List<ConsumoUnidade>> consumosUnidade, Condominio condominio,
+	public File geraArquivo(Map<UnidadeConsumidora, List<ConsumoUnidade>> consumosUnidade, Condominio condominio,
 			ConsumoCondominio consumoCondominio, Integer mes, Integer ano) {
-		String mesAno = mes + "-" + ano;
+		String mesAno = NumeroHelper.formataNumeroTo2Inteiros(mes) + "-" + ano;
 
-		String nomeDoArquivo = "Rateio de Consumo do " + condominio.getNome() + " - MES-ANO " + mesAno + ".csv";
-		String diretorio = "//Users/flavio/Documents/condominio";
+		String nomeDoArquivo = "rateio-consumo-" + condominio.getNomeFormatado() + "-mes-" + mesAno + ".csv";
+		String diretorio = "/data/condominio";
 
 		BufferedWriter bw = ArquivoHelper.getArquivo(diretorio, nomeDoArquivo);
 
@@ -40,8 +42,8 @@ public class GeradorArquivoConsumo {
 
 		try {
 			LOGGER.log(Level.INFO,
-					"Gera o arquivo de consumo do condomínio " + condominio.getNome() + " do mes/ano {0}", mesAno);
-			String cabecalho = "Rateio de Consumo do " + condominio.getNome() + " do MES/ANO " + mesAno + "\n";
+					"Gera o arquivo de consumo do condomínio " + condominio.getNome() + " do mes-ano {0}", mesAno);
+			String cabecalho = "Rateio de Consumo do " + condominio.getNome() + " do MES-ANO " + mesAno + "\n";
 			bw.write(cabecalho);
 			bw.write("\n");
 
@@ -50,7 +52,7 @@ public class GeradorArquivoConsumo {
 			Double valorTotalUnidade = 0.0;
 
 			for (UnidadeConsumidora unidade : consumosUnidade.keySet()) {
-				bw.write(cabecalhoUnidade);
+				bw.write(CABECALHO_UNIDADE);
 				valorTotalUnidade = 0.0;
 
 				for (ConsumoUnidade consumo : consumosUnidade.get(unidade)) {
@@ -66,36 +68,38 @@ public class GeradorArquivoConsumo {
 				}
 
 				/* Adiciona o rodápe de totalização da unidade */
-				bw.write("TOTAL;;;;;;;;;" + df.format(valorTotalUnidade) + "\n");
-				bw.write(linhaEmBranco);
+				bw.write("TOTAL;;;;;;;;;" + NumeroHelper.formataNumeroTo2Decimais(valorTotalUnidade) + "\n");
+				bw.write(LINHA_EM_BRANCO);
 			}
 
 			Double valorTotalFaturadoAgua = consumoCondominio.getValorTotalFaturado();
 			Double valorTotalCondominioAgua = valorTotalFaturadoAgua - valorTotalRateadoAgua;
 
 			/* Gerando o total do valor rateado de água pelas unidades */
-			bw.write(linhaEmBranco);
-			bw.write("TOTAL DA AGUA RATEADA;;;;;;;;;" + df.format(valorTotalRateadoAgua));
-			bw.write(linhaEmBranco);
-			bw.write("TOTAL DA AGUA CONDOMINIO;;;;;;;;;" + df.format(valorTotalCondominioAgua));
-			bw.write(linhaEmBranco);
-			bw.write("TOTAL DA AGUA FATURADA;;;;;;;;;" + df.format(valorTotalFaturadoAgua));
-			bw.write(linhaEmBranco);
-			bw.write(linhaEmBranco);
+			bw.write(LINHA_EM_BRANCO);
+			bw.write("TOTAL DA AGUA AREA PRIVADA;;;;;;;;;"
+					+ NumeroHelper.formataNumeroTo2Decimais(valorTotalRateadoAgua));
+			bw.write(LINHA_EM_BRANCO);
+			bw.write("TOTAL DA AGUA AREA COMUM;;;;;;;;;"
+					+ NumeroHelper.formataNumeroTo2Decimais(valorTotalCondominioAgua));
+			bw.write(LINHA_EM_BRANCO);
+			bw.write("TOTAL DA AGUA FATURADA;;;;;;;;;" + NumeroHelper.formataNumeroTo2Decimais(valorTotalFaturadoAgua));
+			bw.write(LINHA_EM_BRANCO);
+			bw.write(LINHA_EM_BRANCO);
 
 			/* Gerando o total do valor rateado de gás pelas unidades */
-			bw.write("TOTAL DO GAS RATEADO;;;;;;;;;" + df.format(valorTotalRateadoGas));
-			bw.write(linhaEmBranco);
+			bw.write(
+					"TOTAL DO GAS AREA PRIVADA;;;;;;;;;" + NumeroHelper.formataNumeroTo2Decimais(valorTotalRateadoGas));
+			bw.write(LINHA_EM_BRANCO);
 
 			bw.close();
-			// fw.close();
 			LOGGER.log(Level.INFO, "Finalizado a geração do arquivo de consumo do condomínio " + condominio.getNome()
-					+ " do mes/ano {0}", mesAno);
+					+ " do mes-ano {0}", mesAno);
 		} catch (IOException ioe) {
-			// gerar exceção String mensagem =
-			// Mensagem.CGI_ERRO_GERACAO_ARQUIVO.getMensagem(nomeCompletoDoArquivo,
-			// fabricante);
 			ioe.printStackTrace();
+			throw new NegocioException(Mensagem.CONSUMO_NAO_FOI_POSSIVEL_GERAR_ARQUIVO, mesAno);
 		}
+
+		return new File(nomeCompletoDoArquivo);
 	}
 }

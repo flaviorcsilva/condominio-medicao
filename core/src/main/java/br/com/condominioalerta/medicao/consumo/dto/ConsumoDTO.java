@@ -1,21 +1,18 @@
-package br.com.iupi.condominio.medicao.consumo.dto;
-
-import java.text.DecimalFormat;
+package br.com.condominioalerta.medicao.consumo.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
+import br.com.condominioalerta.medicao.comum.helper.NumeroHelper;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoUnidade;
 
 @XmlRootElement
-@XmlType(propOrder = { "unidade", "tipoMedicao", "dataLeituraAnterior", "medicaoAnterior", "dataLeituraAtual",
-		"medicaoAtual", "consumo", "fator", "valorM3", "valorAPagar" })
+@XmlType(propOrder = { "unidade", "tipo", "dataLeituraAnterior", "medicaoAnterior", "dataLeituraAtual", "medicaoAtual",
+		"consumo", "fator", "valorM3", "valorAPagar" })
 public class ConsumoDTO {
 
-	private final DecimalFormat df2casas = new DecimalFormat("###.00");
-	private final DecimalFormat df5casas = new DecimalFormat("###.00###");
 	private static final String NI = "--";
 	private ConsumoUnidade consumoUnidade;
 
@@ -37,13 +34,13 @@ public class ConsumoDTO {
 		return NI;
 	}
 
-	public String getTipoMedicao() {
+	public Integer getTipo() {
 		if (consumoUnidade.getLeituraAtual() != null && consumoUnidade.getLeituraAtual().getMedidor() != null
 				&& consumoUnidade.getLeituraAtual().getMedidor().getTipo() != null) {
-			return consumoUnidade.getLeituraAtual().getMedidor().getTipo().getValor();
+			return consumoUnidade.getLeituraAtual().getMedidor().getTipo().getChave();
 		}
 
-		return NI;
+		return 0;
 	}
 
 	public String getDataLeituraAnterior() {
@@ -87,16 +84,16 @@ public class ConsumoDTO {
 	}
 
 	public String getValorM3() {
-		return df5casas.format(consumoUnidade.getValorM3());
+		return NumeroHelper.formataNumeroTo5Decimais(consumoUnidade.getValorM3());
 	}
 
 	public String getValorAPagar() {
-		return df2casas.format(consumoUnidade.getValor());
+		return NumeroHelper.formataNumeroTo2Decimais(consumoUnidade.getValor());
 	}
 
 	@Override
 	public String toString() {
-		return getUnidade() + ";" + getTipoMedicao() + ";" + getDataLeituraAnterior() + ";" + getMedicaoAnterior() + ";"
+		return getUnidade() + ";" + getTipo() + ";" + getDataLeituraAnterior() + ";" + getMedicaoAnterior() + ";"
 				+ getDataLeituraAtual() + ";" + getMedicaoAtual() + ";" + getConsumo() + ";" + getFator() + ";"
 				+ getValorM3() + ";" + getValorAPagar();
 	}

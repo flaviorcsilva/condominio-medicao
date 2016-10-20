@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.persistencia;
+package br.com.condominioalerta.medicao.comum.persistencia;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,6 +9,8 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.jboss.logging.Logger;
+
 /**
  * Class to implement the methods of access to the database
  * 
@@ -18,6 +20,8 @@ import javax.persistence.TypedQuery;
  *            Primary Key of the entity
  */
 public abstract class AbstractGenericDAO<ENTITY extends Entidade> {
+
+	private static final Logger LOGGER = Logger.getLogger(AbstractGenericDAO.class);
 
 	private final String SQL_FIND_ALL = " SELECT e FROM :entity e";
 	private final String SQL_RECORDS_COUNT = "SELECT COUNT(e) FROM :entity e";
@@ -110,11 +114,11 @@ public abstract class AbstractGenericDAO<ENTITY extends Entidade> {
 
 			return returnValue;
 		} catch (NoResultException nre) {
-			nre.printStackTrace();
-			
+			LOGGER.error("[NoResultException] Não houve resultado para a query: " + query.toString());
+
 			return null;
 		} catch (NonUniqueResultException nure) {
-			nure.printStackTrace();
+			LOGGER.error("[NonUniqueResultException] Retornou mais de um resultado para a query: " + query.toString());
 
 			return null;
 		}

@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.medidor.modelo;
+package br.com.condominioalerta.medicao.medidor.model;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -8,9 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.iupi.condominio.medicao.comum.converter.TipoMedicaoConverter;
-import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.converter.TipoMedicaoConverter;
+import br.com.condominioalerta.medicao.comum.persistencia.Entidade;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 @Entity
 @Table(name = "medidor")

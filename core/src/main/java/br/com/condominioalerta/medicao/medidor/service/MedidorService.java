@@ -1,17 +1,17 @@
-package br.com.iupi.condominio.medicao.medidor.service;
+package br.com.condominioalerta.medicao.medidor.service;
 
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.medidor.dao.MedidorDAO;
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
-import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.medidor.dao.MedidorDAO;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.unidade.service.UnidadeConsumidoraService;
 
 @Stateless
 public class MedidorService {

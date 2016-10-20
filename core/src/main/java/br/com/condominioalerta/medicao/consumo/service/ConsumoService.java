@@ -1,5 +1,6 @@
-package br.com.iupi.condominio.medicao.consumo.service;
+package br.com.condominioalerta.medicao.consumo.service;
 
+import java.io.File;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,20 +12,24 @@ import java.util.TreeMap;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
-import br.com.iupi.condominio.medicao.condominio.service.CondominioService;
-import br.com.iupi.condominio.medicao.consumo.arquivo.GeradorArquivoConsumo;
-import br.com.iupi.condominio.medicao.consumo.dao.ConsumoCondominioDAO;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.leitura.service.LeituraService;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
-import br.com.iupi.condominio.medicao.unidade.service.UnidadeConsumidoraService;
+import br.com.condominioalerta.medicao.comum.email.EmailService;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.comum.helper.ArquivoHelper;
+import br.com.condominioalerta.medicao.comum.helper.DataHelper;
+import br.com.condominioalerta.medicao.comum.helper.NumeroHelper;
+import br.com.condominioalerta.medicao.comum.validacao.Assert;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
+import br.com.condominioalerta.medicao.condominio.service.CondominioService;
+import br.com.condominioalerta.medicao.consumo.dao.ConsumoCondominioDAO;
+import br.com.condominioalerta.medicao.consumo.dto.ConsumoDTO;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoCondominio;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoUnidade;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
+import br.com.condominioalerta.medicao.leitura.service.LeituraService;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.unidade.service.UnidadeConsumidoraService;
 
 @Stateless
 public class ConsumoService {
@@ -42,18 +47,29 @@ public class ConsumoService {
 	private ConsumoCondominioDAO dao;
 
 	@Inject
-	private GeradorArquivoConsumo geradorArquivoConsumo;
+	private ArquivoConsumoService arquivoConsumoService;
 
-	public ConsumoUnidade calculaConsumo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, Integer mes,
+	@Inject
+	private EmailService emailService;
+
+	public List<ConsumoUnidade> calculaConsumosDoMesAnoPorUnidade(UnidadeConsumidora unidadeConsumidora, Integer mes,
 			Integer ano) {
-		ConsumoCondominio consumoCondominio = this
-				.consultaConsumoCondominio(unidadeConsumidora.getCondominio().getCodigo(), tipoMedicao, mes, ano);
+		List<ConsumoUnidade> consumos = new ArrayList<>();
 
-		return this.calculaConsumo(unidadeConsumidora, tipoMedicao, mes, ano, consumoCondominio);
+		ConsumoUnidade consumo = null;
+		for (TipoMedicao tipoMedicao : TipoMedicao.values()) {
+			consumo = this.calculaConsumo(unidadeConsumidora, tipoMedicao, mes, ano);
+
+			if (consumo != null) {
+				consumos.add(consumo);
+			}
+		}
+
+		return new ArrayList<ConsumoUnidade>(consumos);
 	}
 
 	public ConsumoUnidade calculaConsumo(UnidadeConsumidora unidadeConsumidora, TipoMedicao tipoMedicao, Integer mes,
-			Integer ano, ConsumoCondominio consumoCondominio) {
+			Integer ano) {
 		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
 		YearMonth mesAnterior = mesAtual.minusMonths(1);
 
@@ -61,10 +77,81 @@ public class ConsumoService {
 		Leitura leituraAnterior = leituraService.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAnterior);
 		Leitura leituraAtual = leituraService.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAtual);
 
+		if (leituraAnterior == null || leituraAtual == null) {
+			return null;
+		}
+
+		ConsumoCondominio consumoCondominio = this
+				.consultaConsumoCondominio(unidadeConsumidora.getCondominio().getCodigo(), tipoMedicao, mes, ano);
+
 		return new ConsumoUnidade(leituraAnterior, leituraAtual, consumoCondominio.getValorM3());
 	}
 
-	public List<ConsumoUnidade> calculaConsumos(String codigoCondominio, Integer mes, Integer ano) {
+	public void enviaConsumo(UnidadeConsumidora unidadeConsumidora, Integer mes, Integer ano) {
+		String unidade = unidadeConsumidora.getUnidade();
+		String mesAno = DataHelper.getMesPorExtenso(mes, ano) + "/" + ano;
+
+		Assert.notBlank(unidadeConsumidora.getEmailResponsavel(), Mensagem.UNIDADE_NAO_EXISTE_EMAIL, unidade);
+
+		String fileHtml = "emails/consumo.html";
+		String html = ArquivoHelper.converteArquivoResourceToString(fileHtml);
+
+		List<ConsumoUnidade> consumos = new ArrayList<>();
+		consumos = this.calculaConsumosDoMesAnoPorUnidade(unidadeConsumidora, mes, ano);
+
+		if (consumos.isEmpty()) {
+			throw new NegocioException(Mensagem.CONSUMO_NAO_HA_CONSUMO_PARA_UNIDADE, unidade, mesAno);
+		}
+
+		/* Realizando o BINDING para trocar as tags pelos dados do consumo */
+		html = html.replace("{unidade.consumidora}", unidade);
+		html = html.replace("{mes.ano}", mesAno);
+
+		Double valorTotal = 0.0;
+		for (ConsumoUnidade consumoUnidade : consumos) {
+			ConsumoDTO consumo = new ConsumoDTO(consumoUnidade);
+
+			String binding = consumoUnidade.getTipoMedicao().getBinding();
+
+			html = html.replace("{" + binding + ".leitura.anterior}", consumo.getDataLeituraAnterior());
+			html = html.replace("{" + binding + ".medicao.anterior}", consumo.getMedicaoAnterior().toString());
+			html = html.replace("{" + binding + ".leitura.atual}", consumo.getDataLeituraAtual());
+			html = html.replace("{" + binding + ".medicao.atual}", consumo.getMedicaoAtual().toString());
+			html = html.replace("{" + binding + ".consumo}", consumo.getConsumo().toString());
+			html = html.replace("{" + binding + ".valor.m3}", consumo.getValorM3());
+			html = html.replace("{" + binding + ".valor.pagar}", consumo.getValorAPagar());
+
+			valorTotal = valorTotal + consumoUnidade.getValor();
+		}
+
+		html = html.replace("{valor.total}", NumeroHelper.formataNumeroTo2Decimais(valorTotal));
+
+		html = removeTagsNaoPopuladas(html);
+
+		String subject = "Informativo de Consumo: " + unidade + " - " + mesAno;
+		// emailService.send(unidadeConsumidora.getEmailResponsavel(), subject,
+		// html, "text/html");
+		emailService.sendGrid(unidadeConsumidora.getEmailResponsavel(), subject, html, "text/html");
+	}
+
+	private String removeTagsNaoPopuladas(String html) {
+		for (TipoMedicao tipoMedicao : TipoMedicao.values()) {
+			String vazio = "--";
+			String binding = tipoMedicao.getBinding();
+
+			html = html.replace("{" + binding + ".leitura.anterior}", vazio);
+			html = html.replace("{" + binding + ".medicao.anterior}", vazio);
+			html = html.replace("{" + binding + ".leitura.atual}", vazio);
+			html = html.replace("{" + binding + ".medicao.atual}", vazio);
+			html = html.replace("{" + binding + ".consumo}", vazio);
+			html = html.replace("{" + binding + ".valor.m3}", vazio);
+			html = html.replace("{" + binding + ".valor.pagar}", vazio);
+		}
+
+		return html;
+	}
+
+	public void geraArquivo(String codigoCondominio, Integer mes, Integer ano) {
 		Map<UnidadeConsumidora, List<ConsumoUnidade>> consumosUnidade = new TreeMap<>();
 		List<ConsumoUnidade> consumos = null;
 
@@ -100,7 +187,48 @@ public class ConsumoService {
 		ConsumoCondominio consumoCondominio = consultaConsumoCondominio(codigoCondominio, TipoMedicao.AGUA_FRIA, mes,
 				ano);
 
-		geradorArquivoConsumo.geraArquivo(consumosUnidade, condominio, consumoCondominio, mes, ano);
+		File attachment = arquivoConsumoService.geraArquivo(consumosUnidade, condominio, consumoCondominio, mes, ano);
+		
+		String addresses = condominio.getEmail();
+		String subject = "Planilha de Rateio do Consumo - " + DataHelper.getMesPorExtenso(mes, ano) + "/" + ano;
+		String content = "Segue a planilha de rateio em anexo.";
+		String contentType = "text/plain";
+		String contentId = condominio.getNomeFormatado();
+
+		emailService.sendGrid(addresses, subject, content, contentType, attachment, contentId);
+	}
+
+	public List<ConsumoUnidade> calculaConsumos(String codigoCondominio, Integer mes, Integer ano) {
+		Map<UnidadeConsumidora, List<ConsumoUnidade>> consumosUnidade = new TreeMap<>();
+		List<ConsumoUnidade> consumos = null;
+
+		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
+		YearMonth mesAnterior = mesAtual.minusMonths(1);
+
+		/* Cache com o valores do M3 para Água e Gás */
+		Map<TipoMedicao, Double> valorM3 = criaMapaValorM3(codigoCondominio, mes, ano);
+
+		/* Obtém todas as unidades consumidoras do condomínio */
+		List<UnidadeConsumidora> unidades = unidadeConsumidoraService
+				.consultaUnidadesConsumidorasPorCondominio(codigoCondominio);
+		for (UnidadeConsumidora unidadeConsumidora : unidades) {
+
+			consumos = new ArrayList<ConsumoUnidade>();
+			/* Obtém as leituras atuais da unidade */
+			List<Leitura> leiturasAtuais = leituraService.consultaLeituras(unidadeConsumidora, mesAtual);
+			for (Leitura leituraAtual : leiturasAtuais) {
+				TipoMedicao tipoMedicao = leituraAtual.getMedidor().getTipo();
+
+				/* Obtém a leitura anterior de mesmo tipo desta unidade */
+				Leitura leituraAnterior = leituraService.consultaLeitura(unidadeConsumidora, tipoMedicao, mesAnterior);
+
+				Double precoM3 = valorM3.get(leituraAtual.getMedidor().getTipo());
+
+				consumos.add(new ConsumoUnidade(leituraAnterior, leituraAtual, precoM3));
+			}
+
+			consumosUnidade.put(unidadeConsumidora, consumos);
+		}
 
 		return consumos;
 	}
@@ -129,7 +257,8 @@ public class ConsumoService {
 
 		if (consumoCondominio == null || consumoCondominio.getValorM3() == null
 				|| consumoCondominio.getValorM3() == 0.0) {
-			throw new NegocioException(Mensagem.CONSUMO_NAO_EXISTENTE);
+			throw new NegocioException(Mensagem.CONSUMO_CONDOMINIO_NAO_HA_REGISTRO,
+					DataHelper.getMesPorExtenso(mes, ano) + "/" + ano);
 		}
 
 		return consumoCondominio;

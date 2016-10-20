@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.converter;
+package br.com.condominioalerta.medicao.comum.converter;
 
 import java.time.Instant;
 import java.time.LocalDate;

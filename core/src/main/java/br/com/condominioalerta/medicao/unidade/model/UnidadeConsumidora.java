@@ -1,7 +1,9 @@
-package br.com.iupi.condominio.medicao.unidade.modelo;
+package br.com.condominioalerta.medicao.unidade.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,8 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
+import br.com.condominioalerta.medicao.comum.persistencia.Entidade;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
 
 @Entity
 @Table(name = "unidade")
@@ -30,6 +32,16 @@ public class UnidadeConsumidora extends Entidade implements Comparable<UnidadeCo
 
 	@Column(name = "ds_unidade")
 	private String descricao;
+
+	@Column(name = "cd_email_responsavel")
+	private String emailResponsavel;
+
+	@Column(name = "nu_telefone_responsavel")
+	private String telefoneResponsavel;
+	
+	@Column(name = "tp_unidade")
+	@Enumerated(EnumType.ORDINAL)
+	private TipoUnidade tipo;
 
 	public Long getId() {
 		return id;
@@ -61,6 +73,30 @@ public class UnidadeConsumidora extends Entidade implements Comparable<UnidadeCo
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public String getEmailResponsavel() {
+		return emailResponsavel;
+	}
+
+	public void setEmailResponsavel(String emailResponsavel) {
+		this.emailResponsavel = emailResponsavel;
+	}
+
+	public String getTelefoneResponsavel() {
+		return telefoneResponsavel;
+	}
+
+	public void setTelefoneResponsavel(String telefoneResponsavel) {
+		this.telefoneResponsavel = telefoneResponsavel;
+	}
+
+	public TipoUnidade getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoUnidade tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override

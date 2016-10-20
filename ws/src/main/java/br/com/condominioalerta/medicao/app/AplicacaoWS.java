@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.app;
+package br.com.condominioalerta.medicao.app;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -6,10 +6,11 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-import br.com.iupi.condominio.medicao.comum.filter.AutorizacaoFilter;
-import br.com.iupi.condominio.medicao.consumo.ws.ConsumoResource;
-import br.com.iupi.condominio.medicao.leitura.ws.LeituraResource;
-import br.com.iupi.condominio.medicao.medidor.ws.MedidorResource;
+import br.com.condominioalerta.medicao.comum.filter.AutorizacaoFilter;
+import br.com.condominioalerta.medicao.consumo.ws.ConsumoResource;
+import br.com.condominioalerta.medicao.leitura.ws.LeituraResource;
+import br.com.condominioalerta.medicao.medidor.ws.MedidorResource;
+import br.com.condominioalerta.medicao.usuario.ws.UsuarioResource;
 
 @ApplicationPath("/medicao")
 public class AplicacaoWS extends Application {
@@ -21,6 +22,8 @@ public class AplicacaoWS extends Application {
 		classes.add(LeituraResource.class);
 		classes.add(ConsumoResource.class);
 		classes.add(MedidorResource.class);
+		classes.add(UsuarioResource.class);
+		classes.add(HelloResource.class);
 
 		return classes;
 	}

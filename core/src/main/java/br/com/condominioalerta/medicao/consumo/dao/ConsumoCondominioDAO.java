@@ -1,12 +1,12 @@
-package br.com.iupi.condominio.medicao.consumo.dao;
+package br.com.condominioalerta.medicao.consumo.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.consumo.model.ConsumoCondominio;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
 
 public class ConsumoCondominioDAO extends AbstractGenericDAO<ConsumoCondominio> {
 

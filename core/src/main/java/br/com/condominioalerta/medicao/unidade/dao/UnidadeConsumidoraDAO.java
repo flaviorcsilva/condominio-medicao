@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.unidade.dao;
+package br.com.condominioalerta.medicao.unidade.dao;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 public class UnidadeConsumidoraDAO extends AbstractGenericDAO<UnidadeConsumidora> {
 

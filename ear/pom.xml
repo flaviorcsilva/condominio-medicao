@@ -6,7 +6,7 @@
 
 	<parent>
 		<artifactId>condominio-medicao</artifactId>
-		<groupId>br.com.iupi.condominio.medicao</groupId>
+		<groupId>br.com.condominioalerta.medicao</groupId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
@@ -18,20 +18,20 @@
 	<dependencies>
 	
 		<dependency>
-			<groupId>br.com.iupi.condominio.medicao</groupId>
-			<artifactId>medicao-core</artifactId>
+			<groupId>br.com.condominioalerta.medicao</groupId>
+			<artifactId>core</artifactId>
 			<type>ejb</type>
 		</dependency>
 
 		<dependency>
-			<groupId>br.com.iupi.condominio.medicao</groupId>
-			<artifactId>medicao-web</artifactId>
+			<groupId>br.com.condominioalerta.medicao</groupId>
+			<artifactId>web</artifactId>
 			<type>war</type>
 		</dependency>
 		
 		<dependency>
-			<groupId>br.com.iupi.condominio.medicao</groupId>
-			<artifactId>medicao-ws</artifactId>
+			<groupId>br.com.condominioalerta.medicao</groupId>
+			<artifactId>ws</artifactId>
 			<type>war</type>
 		</dependency>
 		

@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Condomínio Alerta - Medição de Consumo</title>
+	
+</head>
+
+<body bgcolor="#FFFFFF" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" style="font-family: Helvetica Neue, Helvetica, Helvetica, Arial, sans-serif;">
+
+	<table bgcolor="#999999" style="width:100%; border-collapse:collapse;">
+		<tr display="block" max-width="650px"	margin="0" clear="both">
+			<td align="left"><h6 style="font-weight:900; font-size: 13px; text-transform: uppercase; color:#444; line-height: 1.1; margin-bottom:15px; margin-left:15px;">PRIVILEGE NOROESTE</h6></td>
+
+			<td align="center"><h6 style="margin-bottom:15px; font-size: 19px; text-transform: uppercase; color:#444; line-height: 1.1;">MEDIÇÃO DE CONSUMO</h6></td>
+
+			<td align="right"><h6 style="font-weight:900; font-size: 13px; text-transform: uppercase; color:#444; line-height: 1.1; margin-bottom:15px; margin-right:15px">CONDOMÍNIO ALERTA</h6></td>
+		</tr>	
+	</table>
+
+	<p align="center" style="font-size: 16px;">UNIDADE: <span style="font-weight:bold; font-size:16px;">{unidade.consumidora}</span></p>
+
+	<p align="center" style="font-size: 16px">MÊS/ANO: <span style="font-weight:bold; font-size:16px;">{mes.ano}</span></p>
+
+	<table style="width:100%; border-collapse:collapse; padding:14px; max-width:650px; margin:0 auto; display:block;">
+		<thead>
+			<tr style="background-color:#dddddd; font-weight:bold; text-align:center; font-size:13px">
+				<th style="border:1px solid #dddddd; padding:8px;">Tipo Medição</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Leitura Anterior</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Medição Anterior</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Leitura Atual</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Medição Atual</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Consumo</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Valor (m3)</th>
+				<th style="border:1px solid #dddddd; padding:8px;">Valor a Pagar</th>
+			</tr>
+		</thead>
+		<tbody style="text-align:center; font-size:13px">
+			<tr>
+				<td style="border:1px solid #dddddd; padding:8px;">Água Fria</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.leitura.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.medicao.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.leitura.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.medicao.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.consumo}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.valor.m3}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.fria.valor.pagar}</td>
+			</tr>
+			<tr>
+				<td style="border:1px solid #dddddd; padding:8px;">Água Quente</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.leitura.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.medicao.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.leitura.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.medicao.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.consumo}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.valor.m3}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{agua.quente.valor.pagar}</td>
+			</tr>
+			<tr>
+				<td style="border:1px solid #dddddd; padding:8px;">Gás</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.leitura.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.medicao.anterior}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.leitura.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.medicao.atual}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.consumo}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.valor.m3}</td>
+				<td style="border:1px solid #dddddd; padding:8px;">{gas.valor.pagar}</td>
+			</tr>	
+		</tbody>
+		<tfoot>
+			<tr style="background-color:#dddddd; font-weight:bold; font-size:14px;">
+				<td colspan="7" style="border:1px solid #dddddd; padding:8px;">TOTAL</td>
+				<td style="text-align:center; border:1px solid #dddddd; padding:8px;font-size:14px;">{valor.total}</td>
+			</tr>	
+		</tfoot>		
+	</table>	
+</body>
+
+</html>

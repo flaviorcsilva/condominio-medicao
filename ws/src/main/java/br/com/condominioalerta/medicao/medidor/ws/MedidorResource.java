@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.medidor.ws;
+package br.com.condominioalerta.medicao.medidor.ws;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,9 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import br.com.iupi.condominio.medicao.medidor.dto.MedidorDTO;
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.service.MedidorService;
+import br.com.condominioalerta.medicao.medidor.dto.MedidorDTO;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
+import br.com.condominioalerta.medicao.medidor.service.MedidorService;
 
 @Path("/medidor")
 @Stateless

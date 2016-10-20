@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.persistencia;
+package br.com.condominioalerta.medicao.comum.persistencia;
 
 public class Entidade {
 

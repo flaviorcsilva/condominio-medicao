@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.filter;
+package br.com.condominioalerta.medicao.comum.filter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,15 +15,18 @@ import javax.ws.rs.ext.Provider;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.usuario.service.UsuarioService;
+import br.com.condominioalerta.medicao.comum.params.Params;
+import br.com.condominioalerta.medicao.usuario.model.Usuario;
+import br.com.condominioalerta.medicao.usuario.service.UsuarioService;
 
 /**
- * Filters to be applied to Requests WebServices (REST).
+ * Filters to be applied to Authentication Requests WebServices (REST).
  */
 @Provider
 public class AutorizacaoFilter implements ContainerRequestFilter {
 
-	private Response unauthorized = Response.status(Status.UNAUTHORIZED).build();
+	private static final Response UNAUTHORIZED = Response.status(Status.UNAUTHORIZED).build();
+	private static final String BASIC = "Basic ";
 
 	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -32,35 +35,47 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 			return;
 		}
 
-		String autorizacao = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-
-		if (StringUtils.isEmpty(autorizacao) || autorizacao.startsWith("Basic ") == false) {
-			requestContext.abortWith(unauthorized);
+		// Teste de keep alive
+		if (requestContext.getUriInfo().getPath().equals("/hello")) {
+			requestContext.getHeaders().add(Params.CONDOMINIO_ID.getParam(), "Condominio Alerta");
 			return;
 		}
 
-		String token = new String(Base64.getDecoder().decode(autorizacao.substring("Basic ".length())),
+		String autorizacao = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+		if (StringUtils.isEmpty(autorizacao) || autorizacao.startsWith(BASIC) == false) {
+			requestContext.abortWith(UNAUTHORIZED);
+			return;
+		}
+
+		String token = new String(Base64.getDecoder().decode(autorizacao.substring(BASIC.length())),
 				StandardCharsets.UTF_8);
 
-		String[] usuario = token.split(":");
-		String login = usuario[0];
-		String senha = usuario[1];
+		String[] dados = token.split(":");
+		String login = dados[0];
+		String senha = dados[1];
 
 		String condominio = null;
 		UsuarioService service = null;
 		InitialContext context;
-
 		try {
 			context = new InitialContext();
 			service = (UsuarioService) context.lookup(
-					"java:global/medicao-ear/medicao-core/UsuarioService!br.com.iupi.condominio.medicao.usuario.service.UsuarioService");
-			condominio = service.autentica(login, senha);
+					"java:global/medicao-ear/core/UsuarioService!br.com.condominioalerta.medicao.usuario.service.UsuarioService");
+			Usuario usuario = service.autentica(login, senha);
+
+			// Caso seja apenas login
+			if (requestContext.getUriInfo().getPath().equals("/usuario/login")) {
+				requestContext.abortWith(Response.ok(usuario.getPerfil().toString()).build());
+				return;
+			} else {
+				condominio = usuario.getCondominio();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			requestContext.abortWith(unauthorized);
+			requestContext.abortWith(UNAUTHORIZED);
 			return;
 		}
 
-		requestContext.getHeaders().add("Condominio-ID", condominio);
+		requestContext.getHeaders().add(Params.CONDOMINIO_ID.getParam(), condominio);
 	}
 }

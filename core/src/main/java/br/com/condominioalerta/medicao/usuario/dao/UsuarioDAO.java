@@ -1,11 +1,11 @@
-package br.com.iupi.condominio.medicao.usuario.dao;
+package br.com.condominioalerta.medicao.usuario.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.usuario.model.Usuario;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.usuario.model.Usuario;
 
 public class UsuarioDAO extends AbstractGenericDAO<Usuario> {
 

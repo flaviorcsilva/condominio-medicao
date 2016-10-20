@@ -1,12 +1,14 @@
-package br.com.iupi.condominio.medicao.leitura.dto;
+package br.com.condominioalerta.medicao.leitura.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
 
 @XmlRootElement
+@XmlType(propOrder = { "id", "data", "unidade", "tipo", "medidor", "medido", "foto" })
 public class LeituraDTO implements Comparable<LeituraDTO> {
 
 	private static final String NI = "--";
@@ -23,6 +25,14 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 		return leitura.getId();
 	}
 
+	public String getData() {
+		if (StringUtils.isNotBlank(leitura.getDataLeituraFormatada())) {
+			return leitura.getDataLeituraFormatada();
+		}
+
+		return StringUtils.EMPTY;
+	}
+
 	public String getUnidade() {
 		if (leitura.getMedidor() != null && leitura.getMedidor().getUnidadeConsumidora() != null
 				&& StringUtils.isNotBlank(leitura.getMedidor().getUnidadeConsumidora().getUnidade())) {
@@ -32,15 +42,15 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 		return NI;
 	}
 
-	public String getTipoMedidor() {
+	public Integer getTipo() {
 		if (leitura.getMedidor() != null && leitura.getMedidor().getTipo() != null) {
-			return leitura.getMedidor().getTipo().getValor();
+			return leitura.getMedidor().getTipo().getChave();
 		}
 
-		return NI;
+		return 0;
 	}
 
-	public String getNumeroMedidor() {
+	public String getMedidor() {
 		if (leitura.getMedidor() != null && StringUtils.isNotBlank(leitura.getMedidor().getNumero())) {
 			return leitura.getMedidor().getNumero();
 		}
@@ -48,17 +58,12 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 		return NI;
 	}
 
-	public String getDataLeitura() {
-		if (StringUtils.isNotBlank(leitura.getDataLeituraFormatada())) {
-			return leitura.getDataLeituraFormatada();
-		}
-
-		return StringUtils.EMPTY;
-	}
-
 	public Integer getMedido() {
 		return leitura.getMedido();
-
+	}
+	
+	public byte[] getFoto() {
+		return leitura.getFoto();
 	}
 
 	public int compareTo(LeituraDTO o) {

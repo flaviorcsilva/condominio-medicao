@@ -1,9 +1,9 @@
-package br.com.iupi.condominio.medicao.comum.converter;
+package br.com.condominioalerta.medicao.comum.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
 
 @Converter(autoApply = true)
 public class TipoMedicaoConverter implements AttributeConverter<TipoMedicao, Integer> {

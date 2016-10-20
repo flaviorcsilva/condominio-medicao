@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.agua.modelo;
+package br.com.condominioalerta.medicao.consumo.model;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,13 +8,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import br.com.iupi.condominio.medicao.comum.helper.DataHelper;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
-import br.com.iupi.condominio.medicao.consumo.modelo.ConsumoUnidade;
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.helper.DataHelper;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 public class ConsumoTest {
 
@@ -65,12 +64,12 @@ public class ConsumoTest {
 
 		Leitura leituraAnterior = new Leitura();
 		leituraAnterior.setMedidor(medidorAguaFria);
-		leituraAnterior.setDataLeitura(DataHelper.convertLocalDateToDate(mesAnterior));
+		leituraAnterior.setDataLeitura(DataHelper.converteLocalDateToDate(mesAnterior));
 		leituraAnterior.setMedido(12406);
 
 		Leitura leituraAtual = new Leitura();
 		leituraAtual.setMedidor(medidorAguaFria);
-		leituraAtual.setDataLeitura(DataHelper.convertLocalDateToDate(mesAtual));
+		leituraAtual.setDataLeitura(DataHelper.converteLocalDateToDate(mesAtual));
 		leituraAtual.setMedido(13672);
 
 		assertEquals(leituraAnterior.getMedidor().getNumero(), leituraAtual.getMedidor().getNumero());

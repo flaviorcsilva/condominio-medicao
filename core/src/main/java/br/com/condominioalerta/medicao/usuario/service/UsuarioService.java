@@ -1,13 +1,13 @@
-package br.com.iupi.condominio.medicao.usuario.service;
+package br.com.condominioalerta.medicao.usuario.service;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.comum.validacao.Assert;
-import br.com.iupi.condominio.medicao.usuario.dao.UsuarioDAO;
-import br.com.iupi.condominio.medicao.usuario.model.Usuario;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.comum.validacao.Assert;
+import br.com.condominioalerta.medicao.usuario.dao.UsuarioDAO;
+import br.com.condominioalerta.medicao.usuario.model.Usuario;
 
 @Stateless
 public class UsuarioService {
@@ -15,7 +15,7 @@ public class UsuarioService {
 	@Inject
 	private UsuarioDAO dao;
 
-	public String autentica(String login, String senha) {
+	public Usuario autentica(String login, String senha) {
 		validaDadosObrigatoriosParaAutenticacao(login, senha);
 
 		Usuario usuario = this.consultaUsuarioPorLogin(login);
@@ -38,7 +38,7 @@ public class UsuarioService {
 			throw new NegocioException(Mensagem.USUARIO_LOGIN_SENHA_INVALIDOS);
 		}
 
-		return usuario.getCondominio();
+		return usuario;
 	}
 
 	private Usuario consultaUsuarioPorLogin(String login) {

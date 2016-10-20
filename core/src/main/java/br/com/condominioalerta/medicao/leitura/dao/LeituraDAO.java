@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.leitura.dao;
+package br.com.condominioalerta.medicao.leitura.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 
@@ -42,6 +42,22 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		Query query = entityManager.createQuery(sql.toString());
 
 		query.setParameter("unidadeConsumidora", unidadeConsumidora);
+		query.setParameter("inicioMes", inicioMes);
+		query.setParameter("finalMes", finalMes);
+
+		return query.getResultList();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Leitura> consultaPorPeriodo(Date inicioMes, Date finalMes) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
+		sql.append("WHERE leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
+		sql.append("ORDER BY leitura.medidor.unidadeConsumidora, leitura.medidor.tipo ");
+
+		Query query = entityManager.createQuery(sql.toString());
+
 		query.setParameter("inicioMes", inicioMes);
 		query.setParameter("finalMes", finalMes);
 

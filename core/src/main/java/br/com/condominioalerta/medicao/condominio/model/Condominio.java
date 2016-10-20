@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.condominio.modelo;
+package br.com.condominioalerta.medicao.condominio.model;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.Entidade;
+import br.com.condominioalerta.medicao.comum.persistencia.Entidade;
 
 @Entity
 @Cacheable
@@ -22,6 +22,9 @@ public class Condominio extends Entidade {
 
 	@Column(name = "tk_condominio")
 	private String token;
+	
+	@Column(name = "cd_email")
+	private String email;
 
 	public String getCodigo() {
 		return codigo;
@@ -45,5 +48,17 @@ public class Condominio extends Entidade {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getNomeFormatado() {
+		return nome.replace(" ", "-").toLowerCase();
 	}
 }

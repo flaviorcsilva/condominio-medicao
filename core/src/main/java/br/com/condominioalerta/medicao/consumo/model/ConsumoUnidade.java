@@ -1,8 +1,8 @@
-package br.com.iupi.condominio.medicao.consumo.modelo;
+package br.com.condominioalerta.medicao.consumo.model;
 
-import br.com.iupi.condominio.medicao.leitura.modelo.Leitura;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.leitura.model.Leitura;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 public class ConsumoUnidade {
 

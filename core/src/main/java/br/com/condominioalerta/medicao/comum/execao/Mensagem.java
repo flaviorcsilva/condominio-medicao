@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.comum.execao;
+package br.com.condominioalerta.medicao.comum.execao;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -42,20 +42,26 @@ public enum Mensagem {
 	/* Condominio */
 	CONDOMINIO_NAO_EXISTENTE("condominio.nao_existente"), //
 
+	/* Consumo */
+	CONSUMO_NAO_HA_CONSUMO_PARA_UNIDADE("consumo.nao_ha_consumo_para_unidade"), //
+	CONSUMO_NAO_FOI_POSSIVEL_GERAR_ARQUIVO("consumo.nao_foi_possivel_gerar_arquivo"), //
+
 	/* Consumo Condomínio */
-	CONSUMO_NAO_EXISTENTE("consumo.nao_existente"), //
+	CONSUMO_CONDOMINIO_NAO_HA_REGISTRO("consumo.condominio.nao_ha_registro"), //
 
 	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //
 	UNIDADE_NAO_EXISTE_UNIDADES("unidade.nao_existe_unidades"), //
 	UNIDADE_NAO_EXISTE_MEDIDORES("unidade.nao_existe_medidores"), //
+	UNIDADE_NAO_EXISTE_EMAIL("unidade.nao_existe_email"), //
+	UNIDADE_NAO_EXISTE_TELEFONE("unidade.nao_existe_telefone"), //
 
 	/* Medidor */
 	MEDIDOR_NAO_EXISTENTE("medidor.nao_existente"),
-	
+
 	/* Usuário */
-	USUARIO_LOGIN_SENHA_INVALIDOS("usuario.login_senha_invalidos"),
-	USUARIO_SUSPENSO("usuario.supenso"),
+	USUARIO_LOGIN_SENHA_INVALIDOS("usuario.login_senha_invalidos"), //
+	USUARIO_SUSPENSO("usuario.supenso"), //
 	USUARIO_NAO_PODE_ACESSAR_APLICACAO("usuario.bloqueado_suspenso");
 
 	private static final String NAO_EXISTE_CHAVE = "Acrescente a chave '%s' no arquivo src/main/resources/mensagens/"

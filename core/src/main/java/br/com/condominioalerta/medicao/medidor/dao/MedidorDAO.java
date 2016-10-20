@@ -1,4 +1,4 @@
-package br.com.iupi.condominio.medicao.medidor.dao;
+package br.com.condominioalerta.medicao.medidor.dao;
 
 import java.util.List;
 
@@ -6,10 +6,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import br.com.iupi.condominio.medicao.comum.persistencia.AbstractGenericDAO;
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
-import br.com.iupi.condominio.medicao.medidor.modelo.TipoMedicao;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
+import br.com.condominioalerta.medicao.medidor.model.TipoMedicao;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 public class MedidorDAO extends AbstractGenericDAO<Medidor> {
 

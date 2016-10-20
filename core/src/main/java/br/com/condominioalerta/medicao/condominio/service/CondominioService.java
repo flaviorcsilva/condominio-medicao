@@ -1,12 +1,12 @@
-package br.com.iupi.condominio.medicao.condominio.service;
+package br.com.condominioalerta.medicao.condominio.service;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.condominio.dao.CondominioDAO;
-import br.com.iupi.condominio.medicao.condominio.modelo.Condominio;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.condominio.dao.CondominioDAO;
+import br.com.condominioalerta.medicao.condominio.model.Condominio;
 
 @Stateless
 public class CondominioService {

@@ -1,14 +1,14 @@
-package br.com.iupi.condominio.medicao.unidade.service;
+package br.com.condominioalerta.medicao.unidade.service;
 
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import br.com.iupi.condominio.medicao.comum.execao.Mensagem;
-import br.com.iupi.condominio.medicao.comum.execao.NegocioException;
-import br.com.iupi.condominio.medicao.unidade.dao.UnidadeConsumidoraDAO;
-import br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora;
+import br.com.condominioalerta.medicao.comum.execao.Mensagem;
+import br.com.condominioalerta.medicao.comum.execao.NegocioException;
+import br.com.condominioalerta.medicao.unidade.dao.UnidadeConsumidoraDAO;
+import br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora;
 
 @Stateless
 public class UnidadeConsumidoraService {

@@ -1,10 +1,10 @@
-package br.com.iupi.condominio.medicao.medidor.dto;
+package br.com.condominioalerta.medicao.medidor.dto;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.lang3.StringUtils;
 
-import br.com.iupi.condominio.medicao.medidor.modelo.Medidor;
+import br.com.condominioalerta.medicao.medidor.model.Medidor;
 
 @XmlRootElement
 public class MedidorDTO implements Comparable<MedidorDTO> {
@@ -36,7 +36,8 @@ public class MedidorDTO implements Comparable<MedidorDTO> {
 	}
 
 	public String getUnidade() {
-		if (medidor.getUnidadeConsumidora() != null && StringUtils.isNotBlank(medidor.getUnidadeConsumidora().getUnidade())) {
+		if (medidor.getUnidadeConsumidora() != null
+				&& StringUtils.isNotBlank(medidor.getUnidadeConsumidora().getUnidade())) {
 			return medidor.getUnidadeConsumidora().getUnidade();
 		}
 

@@ -9,15 +9,14 @@
 	<persistence-unit name="condominio-pu"
 		transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider> 
-		<!--<jta-data-source>java:/condominioDS</jta-data-source>-->
-		<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source>
+		<jta-data-source>java:/condominioDS</jta-data-source>
 
-		<class>br.com.iupi.condominio.medicao.condominio.modelo.Condominio</class>
-		<class>br.com.iupi.condominio.medicao.unidade.modelo.UnidadeConsumidora</class>
-		<class>br.com.iupi.condominio.medicao.medidor.modelo.Medidor</class>
-		<class>br.com.iupi.condominio.medicao.leitura.modelo.Leitura</class>
-		<class>br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio</class>
-		<class>br.com.iupi.condominio.medicao.usuario.model.Usuario</class>
+		<class>br.com.condominioalerta.medicao.condominio.model.Condominio</class>
+		<class>br.com.condominioalerta.medicao.unidade.model.UnidadeConsumidora</class>
+		<class>br.com.condominioalerta.medicao.medidor.model.Medidor</class>
+		<class>br.com.condominioalerta.medicao.leitura.model.Leitura</class>
+		<class>br.com.condominioalerta.medicao.consumo.model.ConsumoCondominio</class>
+		<class>br.com.condominioalerta.medicao.usuario.model.Usuario</class>
 
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 
@@ -33,13 +32,13 @@
 			<!-- infinispan cache config in miliseconds -->
 			<!-- property default for all entities @Cacheable is hibernate.cache.infinispan.entity.expiration.expiration.lifespan -->
 			<property
-				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.condominio.modelo.Condominio.expiration.lifespan"
+				name="hibernate.cache.infinispan.br.com.condominioalerta.medicao.condominio.model.Condominio.expiration.lifespan"
 				value="900000" />
 			<property
-				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.consumo.modelo.ConsumoCondominio.expiration.lifespan"
+				name="hibernate.cache.infinispan.br.com.condominioalerta.medicao.consumo.model.ConsumoCondominio.expiration.lifespan"
 				value="900000" />
 			<property
-				name="hibernate.cache.infinispan.br.com.iupi.condominio.medicao.usuario.model.Usuario.expiration.lifespan"
+				name="hibernate.cache.infinispan.br.com.condominioalerta.medicao.usuario.model.Usuario.expiration.lifespan"
 				value="900000" />
 
 		</properties>
