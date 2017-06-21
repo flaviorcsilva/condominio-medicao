@@ -1,5 +1,7 @@
 package br.com.condominioalerta.medicao.consumo.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -24,6 +26,19 @@ public class ConsumoCondominioDAO extends AbstractGenericDAO<ConsumoCondominio> 
 
 	public ConsumoCondominio consultaPorId(Long id) {
 		return entityManager.find(ConsumoCondominio.class, id);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ConsumoCondominio> consultaPorCondominio(String condominio) {
+		StringBuilder sql = new StringBuilder();
+
+		sql.append(" FROM " + ConsumoCondominio.class.getName() + " as cc ");
+		sql.append("WHERE cc.condominio = :condominio ");
+		
+		Query query = getEntityManager().createQuery(sql.toString());
+		query.setParameter("condominio", condominio);
+		
+		return query.getResultList();
 	}
 
 	public ConsumoCondominio consultaPorCondominioTipoMedicaoAnoMes(String condominio, TipoMedicao tipoMedicao,

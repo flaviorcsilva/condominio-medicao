@@ -8,7 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 import br.com.condominioalerta.medicao.leitura.model.Leitura;
 
 @XmlRootElement
-@XmlType(propOrder = { "id", "data", "unidade", "tipo", "medidor", "medido", "foto" })
+@XmlType(propOrder = { "id", "data", "unidade", "tipo", "medidor", "medido" })
+//@XmlType(propOrder = { "id", "data", "unidade", "tipo", "medidor", "medido", "foto" })
 public class LeituraDTO implements Comparable<LeituraDTO> {
 
 	private static final String NI = "--";
@@ -62,9 +63,9 @@ public class LeituraDTO implements Comparable<LeituraDTO> {
 		return leitura.getMedido();
 	}
 	
-	public byte[] getFoto() {
-		return leitura.getFoto();
-	}
+	//public byte[] getFoto() {
+	//	return leitura.getFoto();
+	//}
 
 	public int compareTo(LeituraDTO o) {
 		return getId().compareTo(o.getId());

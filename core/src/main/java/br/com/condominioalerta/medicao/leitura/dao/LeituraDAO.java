@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import br.com.condominioalerta.medicao.comum.persistencia.AbstractGenericDAO;
 import br.com.condominioalerta.medicao.leitura.model.Leitura;
@@ -30,7 +31,6 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		return entityManager.find(Leitura.class, id);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Leitura> consultaPorUnidadePeriodo(UnidadeConsumidora unidadeConsumidora, Date inicioMes,
 			Date finalMes) {
 		StringBuilder sql = new StringBuilder();
@@ -39,7 +39,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		sql.append("WHERE leitura.medidor.unidadeConsumidora = :unidadeConsumidora ");
 		sql.append("  AND leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
 
-		Query query = entityManager.createQuery(sql.toString());
+		TypedQuery<Leitura> query = entityManager.createQuery(sql.toString(), Leitura.class);
 
 		query.setParameter("unidadeConsumidora", unidadeConsumidora);
 		query.setParameter("inicioMes", inicioMes);
@@ -48,7 +48,6 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		return query.getResultList();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Leitura> consultaPorPeriodo(Date inicioMes, Date finalMes) {
 		StringBuilder sql = new StringBuilder();
 
@@ -56,7 +55,7 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		sql.append("WHERE leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
 		sql.append("ORDER BY leitura.medidor.unidadeConsumidora, leitura.medidor.tipo ");
 
-		Query query = entityManager.createQuery(sql.toString());
+		TypedQuery<Leitura> query = entityManager.createQuery(sql.toString(), Leitura.class);
 
 		query.setParameter("inicioMes", inicioMes);
 		query.setParameter("finalMes", finalMes);

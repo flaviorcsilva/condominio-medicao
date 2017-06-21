@@ -1,5 +1,6 @@
 package br.com.condominioalerta.medicao.unidade.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -55,5 +56,26 @@ public class UnidadeConsumidoraDAO extends AbstractGenericDAO<UnidadeConsumidora
 		query.setParameter("condominio", condominio);
 
 		return query.getResultList();
+	}
+
+	public List<String> consultaListaPorCondominio(String condominio) {
+		String sql = "SELECT cd_unidade FROM unidade WHERE cd_condominio = '" + condominio + "' ORDER BY cd_unidade";
+
+		@SuppressWarnings("unchecked")
+		List<Object> objetos = (List<Object>) getEntityManager().createNativeQuery(sql).getResultList();
+
+		return buildResult(objetos);
+	}
+
+	private List<String> buildResult(List<Object> objects) {
+		List<String> list = new ArrayList<String>();
+
+		for (Object object : objects) {
+			Object data = (Object) object;
+
+			list.add((String) data);
+		}
+
+		return list;
 	}
 }

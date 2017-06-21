@@ -2,12 +2,13 @@ package br.com.condominioalerta.medicao.consumo.service;
 
 import java.io.File;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -34,6 +35,8 @@ import br.com.condominioalerta.medicao.unidade.service.UnidadeConsumidoraService
 @Stateless
 public class ConsumoService {
 
+	private final Logger LOGGER = Logger.getLogger(ConsumoService.class.getName());
+
 	@Inject
 	private LeituraService leituraService;
 
@@ -52,8 +55,7 @@ public class ConsumoService {
 	@Inject
 	private EmailService emailService;
 
-	public List<ConsumoUnidade> calculaConsumosDoMesAnoPorUnidade(UnidadeConsumidora unidadeConsumidora, Integer mes,
-			Integer ano) {
+	public List<ConsumoUnidade> calculaConsumos(UnidadeConsumidora unidadeConsumidora, Integer mes, Integer ano) {
 		List<ConsumoUnidade> consumos = new ArrayList<>();
 
 		ConsumoUnidade consumo = null;
@@ -87,6 +89,20 @@ public class ConsumoService {
 		return new ConsumoUnidade(leituraAnterior, leituraAtual, consumoCondominio.getValorM3());
 	}
 
+	public void enviaConsumo(final String condominio, Integer mes, Integer ano) {
+		List<UnidadeConsumidora> unidades = unidadeConsumidoraService
+				.consultaUnidadesConsumidorasPorCondominio(condominio);
+
+		for (UnidadeConsumidora unidadeConsumidora : unidades) {
+			try {
+				enviaConsumo(unidadeConsumidora, mes, ano);
+			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, "Não foi possível enviar e-mail do consumo " + mes + "-" + ano
+						+ " da unidade: " + unidadeConsumidora.getUnidade(), e.getCause());
+			}
+		}
+	}
+
 	public void enviaConsumo(UnidadeConsumidora unidadeConsumidora, Integer mes, Integer ano) {
 		String unidade = unidadeConsumidora.getUnidade();
 		String mesAno = DataHelper.getMesPorExtenso(mes, ano) + "/" + ano;
@@ -97,7 +113,7 @@ public class ConsumoService {
 		String html = ArquivoHelper.converteArquivoResourceToString(fileHtml);
 
 		List<ConsumoUnidade> consumos = new ArrayList<>();
-		consumos = this.calculaConsumosDoMesAnoPorUnidade(unidadeConsumidora, mes, ano);
+		consumos = this.calculaConsumos(unidadeConsumidora, mes, ano);
 
 		if (consumos.isEmpty()) {
 			throw new NegocioException(Mensagem.CONSUMO_NAO_HA_CONSUMO_PARA_UNIDADE, unidade, mesAno);
@@ -188,7 +204,7 @@ public class ConsumoService {
 				ano);
 
 		File attachment = arquivoConsumoService.geraArquivo(consumosUnidade, condominio, consumoCondominio, mes, ano);
-		
+
 		String addresses = condominio.getEmail();
 		String subject = "Planilha de Rateio do Consumo - " + DataHelper.getMesPorExtenso(mes, ano) + "/" + ano;
 		String content = "Segue a planilha de rateio em anexo.";
@@ -233,14 +249,42 @@ public class ConsumoService {
 		return consumos;
 	}
 
+	public void registraConsumoCondominio(ConsumoCondominio consumoCondominio) {
+		validaAntesDeInserir(consumoCondominio);
+
+		// Verifica se já existe consumo desse tipo para o mês/ano informado.
+		ConsumoCondominio consumoMesAno = dao.consultaPorCondominioTipoMedicaoAnoMes(consumoCondominio.getCondominio(),
+				consumoCondominio.getTipoMedicao(), consumoCondominio.getAnoMes());
+		if (consumoMesAno != null) {
+			String mesAno = consumoCondominio.getMes() + "/" + consumoCondominio.getAno();
+			throw new NegocioException(Mensagem.CONSUMO_CONDOMINIO_MES_ANO_JA_EXISTE_CONSUMO,
+					consumoCondominio.getTipoMedicao().getValor(), mesAno);
+		}
+
+		dao.insert(consumoCondominio);
+	}
+
+	public List<ConsumoCondominio> consultaConsumosDoCondominio(String condominio) {
+		List<ConsumoCondominio> consumos = dao.consultaPorCondominio(condominio);
+		
+		if (consumos.isEmpty()) {
+			//TODO : Gerar exceção
+		}
+		
+		return consumos;
+	}
+
+	private void validaAntesDeInserir(ConsumoCondominio consumoCondominio) {
+		/* Validação de campos obrigatórios. */
+		Assert.notBlank(consumoCondominio.getCondominio(), Mensagem.CONSUMO_CONDOMINIO_CONDOMINIO_OBRIGATORIO);
+		Assert.notBlank(consumoCondominio.getAnoMes(), Mensagem.CONSUMO_CONDOMINIO_MES_ANO_OBRIGATORIO);
+		Assert.notNull(consumoCondominio.getTipoMedicao(), Mensagem.LEITURA_TIPO_INVALIDO);
+		Assert.notNull(consumoCondominio.getValorMedidoFatura(), Mensagem.CONSUMO_CONDOMINIO_VALOR_MEDIDO_OBRIGATORIO);
+		Assert.notNull(consumoCondominio.getValorTotalFaturado(), Mensagem.CONSUMO_CONDOMINIO_VALOR_TOTAL_OBRIGATORIO);
+	}
+
 	private ConsumoCondominio consultaConsumoCondominio(String codigoCondominio, TipoMedicao tipoMedicao, Integer mes,
 			Integer ano) {
-		YearMonth mesAtual = DataHelper.converteIntegerToYearMonth(mes, ano);
-
-		/* Formata o mes/ano para pesquisa */
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
-		String anoMes = mesAtual.format(formatter);
-
 		/*
 		 * Caso a medição seja do tipo Água Quente, deve obter o consumo
 		 * faturado da água fria pela concessionária
@@ -251,6 +295,9 @@ public class ConsumoService {
 		} else {
 			tipo = tipoMedicao;
 		}
+
+		/* Formata o mes/ano para pesquisa */
+		String anoMes = DataHelper.converteMesAnoToStringAnoMes(mes, ano);
 
 		ConsumoCondominio consumoCondominio = dao.consultaPorCondominioTipoMedicaoAnoMes(codigoCondominio, tipo,
 				anoMes);

@@ -32,6 +32,9 @@ public class UnidadeConsumidora extends Entidade implements Comparable<UnidadeCo
 
 	@Column(name = "ds_unidade")
 	private String descricao;
+	
+	@Column(name = "nm_responsavel")
+	private String nomeResponsavel;
 
 	@Column(name = "cd_email_responsavel")
 	private String emailResponsavel;
@@ -73,6 +76,14 @@ public class UnidadeConsumidora extends Entidade implements Comparable<UnidadeCo
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public String getNomeResponsavel() {
+		return nomeResponsavel;
+	}
+
+	public void setNomeResponsavel(String nomeResponsavel) {
+		this.nomeResponsavel = nomeResponsavel;
 	}
 
 	public String getEmailResponsavel() {

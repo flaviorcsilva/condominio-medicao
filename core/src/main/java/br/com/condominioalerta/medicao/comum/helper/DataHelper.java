@@ -16,16 +16,18 @@ import br.com.condominioalerta.medicao.comum.execao.NegocioException;
 
 public class DataHelper {
 
+	private static DateTimeFormatter anoMesFormatter = DateTimeFormatter.ofPattern("yyyyMM");
+	private static DateTimeFormatter diaMesAnoFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+
 	public static LocalDate converteStringToLocalDate(String strDate) {
 		// DateTimeFormatter formatter =
 		// DateTimeFormatter.ofPattern("ddMMyyyy").withLocale(new
 		// Locale("pt-br"));
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMyyyy");
 
 		LocalDate date = null;
 
 		try {
-			date = LocalDate.parse(strDate, formatter);
+			date = LocalDate.parse(strDate, diaMesAnoFormatter);
 		} catch (DateTimeParseException e) {
 			throw new NegocioException(Mensagem.DATA_ERRO_CONVERSAO_FORMATO_DATA);
 		}
@@ -43,6 +45,12 @@ public class DataHelper {
 		}
 
 		return mesAno;
+	}
+
+	public static String converteMesAnoToStringAnoMes(Integer mes, Integer ano) {
+		YearMonth mesAno = DataHelper.converteIntegerToYearMonth(mes, ano);
+
+		return mesAno.format(anoMesFormatter);
 	}
 
 	public static Date converteLocalDateToDate(LocalDate localDate) {

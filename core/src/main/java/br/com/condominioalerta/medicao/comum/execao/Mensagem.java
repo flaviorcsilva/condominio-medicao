@@ -48,6 +48,11 @@ public enum Mensagem {
 
 	/* Consumo Condomínio */
 	CONSUMO_CONDOMINIO_NAO_HA_REGISTRO("consumo.condominio.nao_ha_registro"), //
+	CONSUMO_CONDOMINIO_MES_ANO_JA_EXISTE_CONSUMO("consumo.condominio.mes_ano_ja_existe_consumo"), //
+	CONSUMO_CONDOMINIO_CONDOMINIO_OBRIGATORIO("consumo.condominio.condominio_obrigatorio"), //
+	CONSUMO_CONDOMINIO_MES_ANO_OBRIGATORIO("condominio.condominio.mes_ano_obrigatorio"), //
+	CONSUMO_CONDOMINIO_VALOR_MEDIDO_OBRIGATORIO("consumo.condominio.valor_medido_obrigatorio"), //
+	CONSUMO_CONDOMINIO_VALOR_TOTAL_OBRIGATORIO("consumo.condominio.valor_total_obrigatorio"), //
 
 	/* UnidadeConsumidora */
 	UNIDADE_NAO_EXISTENTE("unidade.nao_existente"), //

@@ -10,6 +10,7 @@ import br.com.condominioalerta.medicao.comum.filter.AutorizacaoFilter;
 import br.com.condominioalerta.medicao.consumo.ws.ConsumoResource;
 import br.com.condominioalerta.medicao.leitura.ws.LeituraResource;
 import br.com.condominioalerta.medicao.medidor.ws.MedidorResource;
+import br.com.condominioalerta.medicao.unidade.ws.UnidadeResource;
 import br.com.condominioalerta.medicao.usuario.ws.UsuarioResource;
 
 @ApplicationPath("/medicao")
@@ -23,7 +24,7 @@ public class AplicacaoWS extends Application {
 		classes.add(ConsumoResource.class);
 		classes.add(MedidorResource.class);
 		classes.add(UsuarioResource.class);
-		classes.add(HelloResource.class);
+		classes.add(UnidadeResource.class);
 
 		return classes;
 	}

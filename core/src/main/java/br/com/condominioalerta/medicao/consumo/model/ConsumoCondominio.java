@@ -32,12 +32,12 @@ public class ConsumoCondominio extends Entidade {
 	@Column(name = "tp_medicao", nullable = false)
 	@Convert(converter = TipoMedicaoConverter.class)
 	private TipoMedicao tipoMedicao;
+	
+	@Column(name = "vl_medido_fatura")
+	private Integer valorMedidoFatura;
 
 	@Column(name = "vl_total_faturado")
 	private Double valorTotalFaturado;
-
-	@Column(name = "vl_medido_fatura")
-	private Integer valorMedidoFatura;
 
 	public Long getId() {
 		return id;
@@ -58,6 +58,14 @@ public class ConsumoCondominio extends Entidade {
 	public String getAnoMes() {
 		return anoMes;
 	}
+	
+	public Integer getMes() {
+		return Integer.parseInt(anoMes.substring(4));
+	}
+	
+	public Integer getAno() {
+		return Integer.parseInt(anoMes.substring(0, 4));
+	}
 
 	public void setAnoMes(String anoMes) {
 		this.anoMes = anoMes;
@@ -71,20 +79,20 @@ public class ConsumoCondominio extends Entidade {
 		this.tipoMedicao = tipoMedicao;
 	}
 
-	public Double getValorTotalFaturado() {
-		return valorTotalFaturado;
-	}
-
-	public void setValorTotalFaturado(Double valorTotalFaturado) {
-		this.valorTotalFaturado = valorTotalFaturado;
-	}
-
 	public Integer getValorMedidoFatura() {
 		return valorMedidoFatura;
 	}
 
 	public void setValorMedidoFatura(Integer valorMedidoFatura) {
 		this.valorMedidoFatura = valorMedidoFatura;
+	}
+	
+	public Double getValorTotalFaturado() {
+		return valorTotalFaturado;
+	}
+
+	public void setValorTotalFaturado(Double valorTotalFaturado) {
+		this.valorTotalFaturado = valorTotalFaturado;
 	}
 
 	public Double getValorM3() {

@@ -51,7 +51,6 @@ public class LeituraService {
 		Medidor medidor = medidorService.consultaMedidor(unidadeConsumidora, tipoMedicao);
 
 		Leitura leitura = new Leitura(medidor, DataHelper.converteLocalDateToDate(dataLeitura), medido, foto);
-
 		dao.insert(leitura);
 
 		return leitura;

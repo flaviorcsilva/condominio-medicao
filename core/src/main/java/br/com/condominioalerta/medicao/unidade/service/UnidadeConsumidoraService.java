@@ -35,4 +35,14 @@ public class UnidadeConsumidoraService {
 
 		return unidades;
 	}
+
+	public List<String> consultaListaDeUnidadesPorCondominio(String condominio) {
+		List<String> unidades = dao.consultaListaPorCondominio(condominio);
+
+		if (unidades.isEmpty()) {
+			throw new NegocioException(Mensagem.UNIDADE_NAO_EXISTE_UNIDADES);
+		}
+
+		return unidades;
+	}
 }

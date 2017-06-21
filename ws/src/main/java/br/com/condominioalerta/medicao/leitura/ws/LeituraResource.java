@@ -21,7 +21,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
 import br.com.condominioalerta.medicao.comum.execao.Mensagem;
-import br.com.condominioalerta.medicao.comum.execao.NegocioException;
 import br.com.condominioalerta.medicao.comum.helper.DataHelper;
 import br.com.condominioalerta.medicao.leitura.dto.LeituraDTO;
 import br.com.condominioalerta.medicao.leitura.model.Leitura;
@@ -34,7 +33,7 @@ public class LeituraResource {
 
 	@Inject
 	private LeituraService service;
-	
+
 	@POST
 	@Path("/{unidade}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -51,19 +50,16 @@ public class LeituraResource {
 			TipoMedicao tipoMedicao = TipoMedicao.get(tipo);
 			if (tipoMedicao == null) {
 				throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).encoding("UTF-8").build());
+						.entity(Mensagem.LEITURA_TIPO_INVALIDO.getMensagem()).build());
 			}
 
 			leitura = service.registraLeitura(condominio, unidade, dataLeitura, tipoMedicao, medido, foto);
 
 			System.out
 					.println("Leitura de " + tipo + " da unidade " + unidade + " em " + dataLeitura + " foi " + medido);
-		} catch (NegocioException ne) {
-			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-					.entity(ne.getMensagem().getMensagem()).encoding("UTF-8").build());
 		} catch (Exception e) {
-			throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(e.getMessage()).encoding("UTF-8").build());
+			throw new WebApplicationException(
+					Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
 		}
 
 		URI uri = UriBuilder.fromPath("leitura/" + unidade + "/{id}").build(leitura.getId().intValue());
@@ -81,14 +77,11 @@ public class LeituraResource {
 			leitura = service.consultaLeitura(id);
 			leitura.setMedido(medido);
 			leitura.setFoto(foto);
-			
+
 			service.atualizaLeitura(leitura);
-		} catch (NegocioException ne) {
-			throw new WebApplicationException(Response.status(Response.Status.BAD_REQUEST)
-					.entity(ne.getMensagem().getMensagem()).encoding("UTF-8").build());
 		} catch (Exception e) {
-			throw new WebApplicationException(Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-					.entity(e.getMessage()).encoding("UTF-8").build());
+			throw new WebApplicationException(
+					Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build());
 		}
 
 		return Response.ok().build();
@@ -103,6 +96,15 @@ public class LeituraResource {
 		LeituraDTO dto = new LeituraDTO(leitura);
 
 		return Response.ok(dto).build();
+	}
+	
+	@GET
+	@Path("/foto/{id}")
+	@Produces("image/*")
+	public Response consultaFotoLeitura(@PathParam("id") Long id) {
+		Leitura leitura = service.consultaLeitura(id);
+
+		return Response.ok(leitura.getFoto()).type("image/png").build();
 	}
 
 	@GET

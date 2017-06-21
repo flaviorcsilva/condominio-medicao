@@ -66,6 +66,8 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 			// Caso seja apenas login
 			if (requestContext.getUriInfo().getPath().equals("/usuario/login")) {
 				requestContext.abortWith(Response.ok(usuario.getPerfil().toString()).build());
+				//TokenDTO tokenDTO = new TokenDTO(usuario);
+				//requestContext.abortWith(Response.ok(tokenDTO).build());
 				return;
 			} else {
 				condominio = usuario.getCondominio();
