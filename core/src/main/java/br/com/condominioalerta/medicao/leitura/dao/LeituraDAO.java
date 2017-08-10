@@ -48,11 +48,12 @@ public class LeituraDAO extends AbstractGenericDAO<Leitura> {
 		return query.getResultList();
 	}
 
-	public List<Leitura> consultaPorPeriodo(Date inicioMes, Date finalMes) {
+	public List<Leitura> consultaPorPeriodo(String condominio, Date inicioMes, Date finalMes) {
 		StringBuilder sql = new StringBuilder();
 
 		sql.append(" FROM " + Leitura.class.getName() + " as leitura ");
 		sql.append("WHERE leitura.dataLeitura BETWEEN :inicioMes AND :finalMes ");
+		sql.append("AND leitura.medidor.unidadeConsumidora.condominio.codigo = :condominio ");
 		sql.append("ORDER BY leitura.medidor.unidadeConsumidora, leitura.medidor.tipo ");
 
 		TypedQuery<Leitura> query = entityManager.createQuery(sql.toString(), Leitura.class);

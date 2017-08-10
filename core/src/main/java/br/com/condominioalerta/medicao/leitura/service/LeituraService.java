@@ -108,7 +108,7 @@ public class LeituraService {
 	}
 
 	public List<Leitura> consultaLeituras(String condominio, LocalDate inicioMes, LocalDate finalMes) {
-		List<Leitura> leituras = dao.consultaPorPeriodo(DataHelper.converteLocalDateToDate(inicioMes),
+		List<Leitura> leituras = dao.consultaPorPeriodo(condominio, DataHelper.converteLocalDateToDate(inicioMes),
 				DataHelper.converteLocalDateToDate(finalMes));
 
 		return leituras;

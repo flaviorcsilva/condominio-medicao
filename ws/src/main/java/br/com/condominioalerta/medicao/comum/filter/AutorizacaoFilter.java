@@ -16,6 +16,7 @@ import javax.ws.rs.ext.Provider;
 import org.apache.commons.lang3.StringUtils;
 
 import br.com.condominioalerta.medicao.comum.params.Params;
+import br.com.condominioalerta.medicao.usuario.dto.TokenDTO;
 import br.com.condominioalerta.medicao.usuario.model.Usuario;
 import br.com.condominioalerta.medicao.usuario.service.UsuarioService;
 
@@ -65,9 +66,9 @@ public class AutorizacaoFilter implements ContainerRequestFilter {
 
 			// Caso seja apenas login
 			if (requestContext.getUriInfo().getPath().equals("/usuario/login")) {
-				requestContext.abortWith(Response.ok(usuario.getPerfil().toString()).build());
-				//TokenDTO tokenDTO = new TokenDTO(usuario);
-				//requestContext.abortWith(Response.ok(tokenDTO).build());
+				//requestContext.abortWith(Response.ok(usuario.getPerfil().toString()).build());
+				TokenDTO tokenDTO = new TokenDTO(usuario);
+				requestContext.abortWith(Response.ok(tokenDTO).build());
 				return;
 			} else {
 				condominio = usuario.getCondominio();
